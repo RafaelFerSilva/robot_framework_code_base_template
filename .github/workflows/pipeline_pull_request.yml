@@ -1,0 +1,86 @@
+name: Pull Request CI
+
+on:
+  pull_request:
+    branches: 
+      - main
+      - develop
+
+jobs:
+  pr_tests:
+    permissions: write-all
+    name: PR E2E Tests
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout the test repository
+        uses: actions/checkout@v4
+
+      - name: Install Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Node.js 20.11.1
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.11.1'
+      
+      - name: Create reports folder
+        run: |
+          mkdir -p reports/coverage
+
+      - name: Install Requirements
+        run: |
+          python -m pip install --upgrade pip
+          pip install -U -r requirements.txt
+          npm install @playwright/test
+          npx playwright install-deps
+          rfbrowser init
+
+      - name: Run the tests
+        run: robot -d ./reports --output output.xml  -v HEADLESS:true -v PIPELINE:true  ./tests
+
+      - name: Validate Test Coverage
+        id: test_coverage
+        run: |
+          python ./resources/libraries/test_coverage_validator.py \
+            ./reports/output.xml \
+            --min-coverage 80 \
+            --output-dir ./reports/coverage
+
+      - name: Read Markdown Report
+        id: read_report
+        if: always()
+        run: |
+          report_file=$(ls ./reports/coverage/test_coverage_report_*.md | head -n 1)
+          echo "report_path=$report_file" >> $GITHUB_OUTPUT
+          cat $report_file
+
+      - name: Create GitHub Comment
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const fs = require('fs');
+            const reportPath = '${{ steps.read_report.outputs.report_path }}';
+            const reportContent = fs.readFileSync(reportPath, 'utf8');
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: reportContent
+            });
+
+      - name: Upload PR Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-test-results
+          path: |
+            ./reports
+            ./reports/coverage
+          retention-days: 5
+          if-no-files-found: ignore

@@ -5,89 +5,89 @@ from datetime import datetime
 from robot.api import ExecutionResult
 import json
 
-# Forçar codificação UTF-8
+# Force UTF-8 encoding
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
 
 def generate_markdown_report(result, min_coverage):
     """
-    Gera um relatório de cobertura de testes em formato Markdown.
+    Generates a test coverage report in Markdown format.
     
     Args:
-        result (ExecutionResult): Resultado da execução dos testes
-        min_coverage (float): Porcentagem mínima de cobertura
+        result (ExecutionResult): Test execution result
+        min_coverage (float): Minimum coverage percentage
     
     Returns:
-        str: Relatório em formato Markdown
+        str: Report in Markdown format
     """
-    # Calcula estatísticas
+    # Calculate statistics
     total_tests = result.statistics.total.total
     passed_tests = result.statistics.total.passed
     failed_tests = result.statistics.total.failed
     skipped_tests = result.statistics.total.skipped
     
-    # Calcula porcentagem de testes passados
+    # Calculate percentage of passed tests
     pass_percentage = (passed_tests / total_tests) * 100
     
-    # Determina status da cobertura
-    coverage_status = "Aprovado ✅" if pass_percentage >= min_coverage else "Reprovado ❌"
+    # Determine coverage status
+    coverage_status = "Passed ✅" if pass_percentage >= min_coverage else "Failed ❌"
     
-    # Cria relatório Markdown
-    markdown_report = f"""## Relatorio de Cobertura de Testes
+    # Create Markdown report
+    markdown_report = f"""## Test Coverage Report
 
-### Resumo Geral
-| Metrica | Valor |
-|---------|-------|
-| Status da Cobertura | {coverage_status} |
-| Cobertura Minima Requerida | {min_coverage}% |
-| Cobertura Atual | {pass_percentage:.2f}% |
+### General Summary
+| Metric | Value |
+|--------|-------|
+| Coverage Status | {coverage_status} |
+| Minimum Required Coverage | {min_coverage}% |
+| Current Coverage | {pass_percentage:.2f}% |
 
-### Detalhes dos Testes
-| Tipo de Teste | Quantidade |
-|--------------|------------|
-| Total de Testes | {total_tests} |
-| Testes Passados | {passed_tests} |
-| Testes Falhos | {failed_tests} |
-| Testes Pulados | {skipped_tests} |
+### Test Details
+| Test Type | Quantity |
+|-----------|----------|
+| Total Tests | {total_tests} |
+| Passed Tests | {passed_tests} |
+| Failed Tests | {failed_tests} |
+| Skipped Tests | {skipped_tests} |
 
-### Detalhamento por Suite
-| Suite | Total de Testes | Testes Passados | Cobertura |
-|-------|----------------|-----------------|-----------|
+### Suite Breakdown
+| Suite | Total Tests | Passed Tests | Coverage |
+|-------|-------------|--------------|----------|
 """
 
-    # Adiciona detalhes de cada suíte de testes
+    # Add details for each test suite
     for suite in result.statistics.suite:
         suite_pass_percentage = (suite.passed / suite.total) * 100 if suite.total > 0 else 0
         markdown_report += f"| {suite.name} | {suite.total} | {suite.passed} | {suite_pass_percentage:.2f}% |\n"
 
-    # Adiciona rodapé
-    markdown_report += f"\n*Gerado em: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}*"
+    # Add footer
+    markdown_report += f"\n*Generated on: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}*"
     
     return markdown_report
 
 def save_markdown_report(report, output_dir):
     """
-    Salva o relatório Markdown em um arquivo.
+    Saves the Markdown report to a file.
     
     Args:
-        report (str): Conteúdo do relatório em Markdown
-        output_dir (str): Diretório para salvar o relatório
+        report (str): Markdown report content
+        output_dir (str): Directory to save the report
     
     Returns:
-        str: Caminho completo do arquivo gerado
+        str: Full path of the generated file
     """
-    # Cria diretório se não existir
+    # Create directory if it doesn't exist
     os.makedirs(output_dir, exist_ok=True)
     
-    # Gera nome de arquivo
+    # Generate filename
     filename = f"test_coverage_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.md"
     filepath = os.path.join(output_dir, filename)
     
-    # Salva arquivo com codificação UTF-8
+    # Save file with UTF-8 encoding
     with open(filepath, 'w', encoding='utf-8') as f:
         f.write(report)
     
-    print(f"Relatorio Markdown gerado em: {filepath}")
+    print(f"Markdown report generated at: {filepath}")
     
     return filepath
 
@@ -98,62 +98,62 @@ def validate_test_coverage(
     verbose=True
 ):
     """
-    Valida a cobertura de testes e gera relatório Markdown.
+    Validates test coverage and generates Markdown report.
     
     Args:
-        output_file (str): Caminho para o arquivo de output.xml
-        min_coverage (float, opcional): Porcentagem mínima de cobertura. Padrão é 80.
-        output_dir (str, opcional): Diretório para salvar relatórios. Padrão é 'test_reports'.
-        verbose (bool, opcional): Habilita log detalhado. Padrão é True.
+        output_file (str): Path to output.xml file
+        min_coverage (float, optional): Minimum coverage percentage. Defaults to 80.
+        output_dir (str, optional): Directory to save reports. Defaults to 'test_reports'.
+        verbose (bool, optional): Enables detailed logging. Defaults to True.
     
     Raises:
-        AssertionError: Se a cobertura de testes estiver abaixo do mínimo especificado.
+        AssertionError: If test coverage is below the specified minimum.
     """
     try:
-        # Carrega o resultado da execução dos testes
+        # Load test execution result
         result = ExecutionResult(output_file)
         
-        # Calcula porcentagem de testes passados
+        # Calculate percentage of passed tests
         total_tests = result.statistics.total.total
         passed_tests = result.statistics.total.passed
         pass_percentage = (passed_tests / total_tests) * 100
         
-        # Gera relatório Markdown
+        # Generate Markdown report
         markdown_report = generate_markdown_report(result, min_coverage)
         
-        # Salva relatório Markdown
+        # Save Markdown report
         save_markdown_report(markdown_report, output_dir)
         
-        # Valida cobertura mínima
+        # Validate minimum coverage
         if pass_percentage < min_coverage:
-            print("Falha na Cobertura de Testes")
+            print("Test Coverage Failed")
             raise AssertionError(
-                f"Cobertura de testes de {pass_percentage:.2f}% "
-                f"esta abaixo do minimo requerido de {min_coverage}%"
+                f"Test coverage of {pass_percentage:.2f}% "
+                f"is below the required minimum of {min_coverage}%"
             )
         
-        print(f"Cobertura de testes aprovada: {pass_percentage:.2f}%")
+        print(f"Test coverage passed: {pass_percentage:.2f}%")
         sys.exit(0)
     
     except Exception as e:
-        print(f"Erro na validacao de cobertura: {e}")
+        print(f"Error in coverage validation: {e}")
         sys.exit(1)
 
 def main():
     """
-    Funcao principal para execucao via linha de comando.
-    Permite passar argumentos customizados.
+    Main function for command-line execution.
+    Allows passing custom arguments.
     """
     import argparse
     
-    parser = argparse.ArgumentParser(description='Validador de Cobertura de Testes')
-    parser.add_argument('output_file', help='Caminho para o arquivo output.xml')
+    parser = argparse.ArgumentParser(description='Test Coverage Validator')
+    parser.add_argument('output_file', help='Path to output.xml file')
     parser.add_argument('--min-coverage', type=float, default=80, 
-                        help='Porcentagem minima de cobertura (padrao: 80)')
+                        help='Minimum coverage percentage (default: 80)')
     parser.add_argument('--output-dir', default='test_reports', 
-                        help='Diretorio para salvar relatorios')
+                        help='Directory to save reports')
     parser.add_argument('--quiet', action='store_true', 
-                        help='Desabilita log detalhado')
+                        help='Disable detailed logging')
     
     args = parser.parse_args()
     
