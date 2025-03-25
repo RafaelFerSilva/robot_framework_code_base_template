@@ -1,6 +1,7 @@
 import sys
 import os
 import io
+import pytz
 from datetime import datetime
 from robot.api import ExecutionResult
 import json
@@ -8,6 +9,9 @@ import json
 # Force UTF-8 encoding
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
+
+# Set the timezone to Brazil/Sao Paulo
+brazil_tz = pytz.timezone('America/Sao_Paulo')
 
 def generate_markdown_report(result, min_coverage):
     """
@@ -60,8 +64,8 @@ def generate_markdown_report(result, min_coverage):
         suite_pass_percentage = (suite.passed / suite.total) * 100 if suite.total > 0 else 0
         markdown_report += f"| {suite.name} | {suite.total} | {suite.passed} | {suite_pass_percentage:.2f}% |\n"
 
-    # Add footer
-    markdown_report += f"\n*Generated on: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}*"
+    # Add footer with Brazil timezone
+    markdown_report += f"\n*Generated on: {datetime.now(brazil_tz).strftime('%Y-%m-%d %H:%M:%S')}*"
     
     return markdown_report
 
@@ -79,8 +83,8 @@ def save_markdown_report(report, output_dir):
     # Create directory if it doesn't exist
     os.makedirs(output_dir, exist_ok=True)
     
-    # Generate filename
-    filename = f"test_coverage_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.md"
+    # Generate filename using Brazil timezone
+    filename = f"test_coverage_report_{datetime.now(brazil_tz).strftime('%Y%m%d_%H%M%S')}.md"
     filepath = os.path.join(output_dir, filename)
     
     # Save file with UTF-8 encoding
