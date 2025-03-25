@@ -54,3 +54,16 @@ We have a script to validate tests code coverage and generate markdown report (r
 
     # Silent mode
     python .\resources\libraries\test_coverage_validator.py .\reports\output.xml --quiet
+
+## Robot Metrics Usage
+
+[robotframework-metrics](https://github.com/adiralashiva8/robotframework-metrics )
+
+After executing your Robot Framework tests, you can generate a metrics report by running:
+
+    robotmetrics --input .\reports\ --output output.xml
+    
+For more options:
+
+    robotmetrics --help
+
