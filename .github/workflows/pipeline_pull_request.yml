@@ -35,7 +35,6 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -U -r requirements.txt
-          pip install robotmetrics
           npm install @playwright/test
           npx playwright install-deps
           rfbrowser init
