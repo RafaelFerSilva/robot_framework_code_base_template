@@ -227,7 +227,7 @@ Remove comma from a string
     RETURN    ${return_text}
 
 Get Dictionary list data by key and value
-    [Documentation]    Retorna uma lista com todos os itens de um dicionário que têm o valor de uma key específicada
+    [Documentation]    Returns a list of all items in a dictionary that have the value of a specified key.
     [Arguments]    ${data}    ${key}    ${value}
 
     ${filtered_items}=    Create List

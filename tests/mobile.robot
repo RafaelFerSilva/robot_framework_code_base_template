@@ -1,6 +1,6 @@
 *** Settings ***
-Resource    ${EXECDIR}/resources/keywords/Common.resource
-Resource    ${EXECDIR}/resources/keywords/DataBase.resource
+Resource    ${EXECDIR}/resources/keywords/Common.keywords.resource
+Resource    ${EXECDIR}/resources/keywords/DataBase.keywords.resource
 
 
 *** Test Cases ***

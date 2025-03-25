@@ -5,7 +5,7 @@ Library             DatabaseLibrary
 Library             Collections
 Library             OperatingSystem
 Library             String
-Resource            ./Common.resource
+Resource            ./Common.keywords.resource
 
 
 *** Variables ***
