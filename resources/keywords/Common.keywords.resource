@@ -41,11 +41,11 @@ Define test data by language
     ...
     ...    = Examples =
     ...    | Define test data by language |    PT    |
-    [Arguments]    ${set_language}=${LANG}    ${env}=${ENVIRONMENT}
+    [Arguments]    ${set_language_file_name}=${LANG}    ${env}=${ENVIRONMENT}
 
     VAR    ${URL}    ${URLS}[${env}]
     Set Global Variable    ${URL}    ${URLS}[${env}]
-    Set language    ${set_language}
+    Set language    ${set_language_file_name}
 
 Set Mobile device to context
     ${device}=    Get Device    ${DEVICE_NAME}
