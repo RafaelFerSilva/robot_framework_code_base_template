@@ -18,13 +18,7 @@ URLS = {
 }
 
 
-LANG = "PT"
-# LANGUAGE_DIC = {
-#     'PT': 'pt',
-#     'MX': 'mx',
-#     'CO': 'co',
-#     'AR': 'ar'
-# }
+LANG = "pt"
 
 
 NEW_CONTEXT = {
