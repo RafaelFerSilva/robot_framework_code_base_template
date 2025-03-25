@@ -19,12 +19,12 @@ URLS = {
 
 
 LANG = "PT"
-LANGUAGE_DIC = {
-    'PT': 'pt',
-    'MX': 'mx',
-    'CO': 'co',
-    'AR': 'ar'
-}
+# LANGUAGE_DIC = {
+#     'PT': 'pt',
+#     'MX': 'mx',
+#     'CO': 'co',
+#     'AR': 'ar'
+# }
 
 
 NEW_CONTEXT = {

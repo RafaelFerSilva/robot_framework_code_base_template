@@ -29,11 +29,11 @@ Set language
     ...    = Examples =
     ...    |    Set language    PT
     ...
-    [Arguments]    ${set_language}=${LANG}
+    [Arguments]    ${file_name}=${LANG}
 
-    ${FILE}=    Load Json From File    ${RESOURCES_FILES}/i18n/${LANGUAGE_DIC}[${set_language}].json    utf-8
-    ${LANGUAGE}=    Convert To Dictionary    ${FILE['${LANGUAGE_DIC}[${set_language}]']}
-    Set Global Variable    ${LANGUAGE}    ${LANGUAGE}
+    ${FILE}=    Load Json From File    ${RESOURCES_FILES}/i18n/${file_name}.json    utf-8
+    ${LANGUAGE_DIC}=    Convert To Dictionary    ${FILE}
+    Set Global Variable    ${LANGUAGE}    ${LANGUAGE_DIC}
 
 Define test data by language
     [Documentation]    Keyword with the objective of identifying *Language* and *URL* on which the tests will be executed.
