@@ -42,9 +42,6 @@ jobs:
       - name: Run the tests
         run: robot -d ./reports --output output.xml  -v HEADLESS:true -v PIPELINE:true  ./tests
 
-      - name: Generate RobotMetrics Report
-        run: robotmetrics --input ./reports/ --output output.xml
-
       - name: Validate Test Coverage
         id: test_coverage
         run: |
@@ -89,13 +86,3 @@ jobs:
             ./reports/robotmetrics
           retention-days: 5
           if-no-files-found: ignore
-
-      # Optional: Publish RobotMetrics Report as GitHub Pages
-      - name: Deploy RobotMetrics Report to GitHub Pages
-        if: always()
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./reports/robotmetrics
-          publish_branch: gh-pages
-          keep_files: true
