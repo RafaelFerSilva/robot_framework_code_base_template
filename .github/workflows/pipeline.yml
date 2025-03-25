@@ -35,7 +35,7 @@ jobs:
           rfbrowser init
 
       - name: Run the tests
-        run: robot -d ./reports  -v HEADLESS:true  ./tests
+        run: robot -d ./reports  -v HEADLESS:true -v PIPELINE:true  ./tests
 
       - name: Upload tests results
         if: always()
