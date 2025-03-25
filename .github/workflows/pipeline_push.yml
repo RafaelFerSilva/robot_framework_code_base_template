@@ -44,8 +44,7 @@ jobs:
         run: robot -d ./reports --output output.xml  -v HEADLESS:true -v PIPELINE:true  ./tests
 
       - name: Generate RobotMetrics Report
-        run: |
-          robotmetrics --input ./reports/output.xml --output ./reports/robotmetrics
+        run: robotmetrics --input ./reports/ --output output.xml
 
       - name: Validate Test Coverage
         run: |
