@@ -28,3 +28,29 @@ Active environment:
 Basic dependêncies for project are on requirements.txt file and use a make_install.py script for install and initializate the robotframework-browser library.
 
     python make_install.py
+
+
+## Run the Tests
+  ### Local
+      robot -d ./reports --output output.xml ./tests
+  
+  ### Pipeline
+      robot -d ./reports --output output.xml  -v HEADLESS:true -v PIPELINE:true  ./tests
+
+
+
+
+## Code Coverage
+We have a script to validate tests code coverage and generate markdown report (resources\libraries\test_coverage_validator.py)
+
+    # Basic mode
+    python .\resources\libraries\test_coverage_validator.py .\reports\output.xml
+
+    # Customizing minimum coverage
+    python .\resources\libraries\test_coverage_validator.py .\reports\output.xml --min-coverage 85
+
+    # Setting Report Directory
+    python .\resources\libraries\test_coverage_validator.py .\reports\output.xml --output-dir custom_reports --min-coverage 85
+
+    # Silent mode
+    python .\resources\libraries\test_coverage_validator.py .\reports\output.xml --quiet
