@@ -25,13 +25,6 @@ Active environment:
       source venv/bin/activate
 
 ## Dependências.
-Basic dependêncies for project are:
-- robotframework
-- robotframework-browser
-- robotframework-faker
-- robotframework-metrics
-- python-dotenv
-
-We create a requirements.txt file with this dependencies and use a make_install.py script for install and initializate the robotframework-browser library.
+Basic dependêncies for project are on requirements.txt file and use a make_install.py script for install and initializate the robotframework-browser library.
 
     python make_install.py
