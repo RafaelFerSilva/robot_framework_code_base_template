@@ -2,20 +2,19 @@
 BROWSER_TIMEOUT = "40"
 BROWSER = "chromium"
 HEADLESS = False
-RESOLUTION_HEIGHT=          "1366"
-RESOLUTION_WIDTH=           "768"
+RESOLUTION_HEIGHT = "1366"
+RESOLUTION_WIDTH = "768"
 MOBILE = False
 DEVICE_NAME = "Nexus 5"
 
 PIPELINE = False
 ENVIRONMENT = "UAT"
-DB_API_MODULE_NAME = "pymssql"
 
 URLS = {
-    'DEV':'https://demoqa.com/',
-    'UAT':'https://demoqa.com/',
-    'RC':'https://demoqa.com/',
-    'PROD':'https://demoqa.com/'
+    'DEV': 'https://demoqa.com/',
+    'UAT': 'https://demoqa.com/',
+    'RC': 'https://demoqa.com/',
+    'PROD': 'https://demoqa.com/'
 }
 
 
@@ -40,4 +39,3 @@ NEW_CONTEXT = {
     "locale": None,
     "userAgent": None
 }
-

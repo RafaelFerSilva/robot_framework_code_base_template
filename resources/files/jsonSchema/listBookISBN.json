@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "http://example.com/example.json",
+  "type": "object",
+  "default": {},
+  "title": "Root Schema",
+  "required": [
+      "isbn",
+      "title",
+      "subTitle",
+      "author",
+      "publish_date",
+      "publisher",
+      "pages",
+      "description",
+      "website"
+  ],
+  "properties": {
+      "isbn": {
+          "type": "string",
+          "default": "",
+          "title": "The isbn Schema",
+          "examples": [
+              "9781449365035"
+          ]
+      },
+      "title": {
+          "type": "string",
+          "default": "",
+          "title": "The title Schema",
+          "examples": [
+              "Speaking JavaScript"
+          ]
+      },
+      "subTitle": {
+          "type": "string",
+          "default": "",
+          "title": "The subTitle Schema",
+          "examples": [
+              "An In-Depth Guide for Programmers"
+          ]
+      },
+      "author": {
+          "type": "string",
+          "default": "",
+          "title": "The author Schema",
+          "examples": [
+              "Axel Rauschmayer"
+          ]
+      },
+      "publish_date": {
+          "type": "string",
+          "default": "",
+          "title": "The publish_date Schema",
+          "examples": [
+              "2014-02-01T00:00:00.000Z"
+          ]
+      },
+      "publisher": {
+          "type": "string",
+          "default": "",
+          "title": "The publisher Schema",
+          "examples": [
+              "O'Reilly Media"
+          ]
+      },
+      "pages": {
+          "type": "integer",
+          "default": 0,
+          "title": "The pages Schema",
+          "examples": [
+              460
+          ]
+      },
+      "description": {
+          "type": "string",
+          "default": "",
+          "title": "The description Schema",
+          "examples": [
+              "Like it or not, JavaScript is everywhere these days-from browser to server to mobile-and now you, too, need to learn the language or dive deeper than you have. This concise book guides you into and through JavaScript, written by a veteran programmer who o"
+          ]
+      },
+      "website": {
+          "type": "string",
+          "default": "",
+          "title": "The website Schema",
+          "examples": [
+              "http://speakingjs.com/"
+          ]
+      }
+  },
+  "examples": [{
+      "isbn": "9781449365035",
+      "title": "Speaking JavaScript",
+      "subTitle": "An In-Depth Guide for Programmers",
+      "author": "Axel Rauschmayer",
+      "publish_date": "2014-02-01T00:00:00.000Z",
+      "publisher": "O'Reilly Media",
+      "pages": 460,
+      "description": "Like it or not, JavaScript is everywhere these days-from browser to server to mobile-and now you, too, need to learn the language or dive deeper than you have. This concise book guides you into and through JavaScript, written by a veteran programmer who o",
+      "website": "http://speakingjs.com/"
+  }]
+}

@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "http://example.com/example.json",
+  "type": "object",
+  "default": {},
+  "title": "Root Schema",
+  "required": [
+      "userID",
+      "username",
+      "books"
+  ],
+  "properties": {
+      "userID": {
+          "type": "string",
+          "default": "",
+          "title": "The userID Schema",
+          "examples": [
+              "6d6880df-7b11-47ca-8df6-45649cfeb66c"
+          ]
+      },
+      "username": {
+          "type": "string",
+          "default": "",
+          "title": "The username Schema",
+          "examples": [
+              "Joseph Mitchell"
+          ]
+      },
+      "books": {
+          "type": "array",
+          "default": [],
+          "title": "The books Schema",
+          "items": {},
+          "examples": [
+              []
+          ]
+      }
+  },
+  "examples": [{
+      "userID": "6d6880df-7b11-47ca-8df6-45649cfeb66c",
+      "username": "Joseph Mitchell",
+      "books": []
+  }]
+}

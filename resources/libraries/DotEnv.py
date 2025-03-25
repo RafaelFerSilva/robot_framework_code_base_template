@@ -3,6 +3,7 @@ from dotenv import dotenv_values, load_dotenv
 from robot.api.deco import keyword
 from robot.api import Failure
 
+
 @keyword('Set Environment Project Variables')
 def set_environment_project_variables(pipeline: bool = False, environment: str = 'rc', print_variables: bool = False):
     """
@@ -28,18 +29,18 @@ def set_environment_project_variables(pipeline: bool = False, environment: str =
         If `print_variables` is True, prints all loaded environment variables in the format "key: value" to the console.
     """
 
-    if(pipeline):
+    if (pipeline):
         value = os.environ
-    else :
+    else:
         load_dotenv(f"{environment.lower()}.env")
         value = dotenv_values(f"{environment.lower()}.env")
 
-    if(print_variables):
+    if (print_variables):
         for name, value in value.items():
             print("{0}: {1}".format(name, value))
-        
-    if(value):
+
+    if (value):
         return value
     else:
-        raise Failure(f"Please check environment key value ou file: key value {environment}")
-        
+        raise Failure(
+            f"Please check environment key value ou file: key value {environment}")

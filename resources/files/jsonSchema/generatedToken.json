@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "http://example.com/example.json",
+  "type": "object",
+  "default": {},
+  "title": "Root Schema",
+  "required": [
+      "token",
+      "expires",
+      "status",
+      "result"
+  ],
+  "properties": {
+      "token": {
+          "type": "string",
+          "default": "",
+          "title": "The token Schema",
+          "examples": [
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6IlNjb3R0IFZlbGV6IiwicGFzc3dvcmQiOiJDNFFrUm8qVCVkIiwiaWF0IjoxNzExMTQyNjAwfQ.A4AWsyDEMpdo2JvmiytmX_RgO9pQLd1dJ81EJSqI24o"
+          ]
+      },
+      "expires": {
+          "type": "string",
+          "default": "",
+          "title": "The expires Schema",
+          "examples": [
+              "2024-03-29T21:23:20.424Z"
+          ]
+      },
+      "status": {
+          "type": "string",
+          "default": "",
+          "title": "The status Schema",
+          "examples": [
+              "Success"
+          ]
+      },
+      "result": {
+          "type": "string",
+          "default": "",
+          "title": "The result Schema",
+          "examples": [
+              "User authorized successfully."
+          ]
+      }
+  },
+  "examples": [{
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6IlNjb3R0IFZlbGV6IiwicGFzc3dvcmQiOiJDNFFrUm8qVCVkIiwiaWF0IjoxNzExMTQyNjAwfQ.A4AWsyDEMpdo2JvmiytmX_RgO9pQLd1dJ81EJSqI24o",
+      "expires": "2024-03-29T21:23:20.424Z",
+      "status": "Success",
+      "result": "User authorized successfully."
+  }]
+}
