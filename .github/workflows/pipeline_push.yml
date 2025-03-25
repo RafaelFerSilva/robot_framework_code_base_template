@@ -74,3 +74,4 @@ jobs:
           publish_dir: ./reports/robotmetrics
           publish_branch: gh-pages
           keep_files: true
+          force_orphan: true
