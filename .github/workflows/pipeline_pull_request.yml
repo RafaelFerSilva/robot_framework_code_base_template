@@ -27,12 +27,29 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
-          -v ${{ github.workspace }}/init.sql:/docker-entrypoint-initdb.d/init.sql
-          --user root
 
     steps:
       - name: Checkout the test repository
         uses: actions/checkout@v4
+      
+      - name: Execute init.sql
+        env:
+          DB_HOST: localhost
+          DB_USER: testuser
+          DB_PASSWORD: testpassword
+          DB_NAME: testdb
+        run: |
+          mysql -h $DB_HOST -u $DB_USER -p$DB_PASSWORD $DB_NAME < ${{ github.workspace }}/init.sql
+      
+      - name: Verify Database Initialization
+        env:
+          DB_HOST: localhost
+          DB_USER: testuser
+          DB_PASSWORD: testpassword
+          DB_NAME: testdb
+        run: |
+          # Exemplo de verificação - contar usuários
+          mysql -h $DB_HOST -u $DB_USER -p$DB_PASSWORD $DB_NAME -e "SELECT COUNT(*) FROM users;"
 
       - name: Install Python 3.12
         uses: actions/setup-python@v5
