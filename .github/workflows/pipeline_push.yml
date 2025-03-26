@@ -112,7 +112,7 @@ jobs:
         - name: Download artifact
           uses: actions/download-artifact@v4
           with:
-            name: robot-reports
+            name: push-test-results
             path: ./reports
 
         - name: Setup Pages
