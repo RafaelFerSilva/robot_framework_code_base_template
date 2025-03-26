@@ -83,7 +83,7 @@ jobs:
           python ./resources/libraries/test_coverage_validator.py \
             ./reports/output.xml \
             --min-coverage 80 \
-            --output-dir ./reports/coverage
+            --output-dir ./reports/coverage || exit 1
 
       - name: Read Markdown Report
         id: read_report
