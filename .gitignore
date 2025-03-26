@@ -171,3 +171,6 @@ robot.toml
 rc.env
 uat.env
 test_reports/
+results/
+result/
+results
