@@ -80,14 +80,6 @@ jobs:
           npx playwright install-deps
           rfbrowser init
 
-      - name: Wait for MySQL to be ready
-        run: |
-          until docker exec $(docker ps -q -f "ancestor=mysql") mysqladmin ping --host=localhost --user=root --password=rootpassword --silent; do
-            echo "Waiting for MySQL..."
-            sleep 5
-          done
-          echo "MySQL is ready!"
-
       - name: Run the tests
         env:
           # For real testing environments these variables must be secret and not exposed.
