@@ -12,45 +12,55 @@ jobs:
     name: PR E2E Tests
     runs-on: ubuntu-24.04
 
-    services:
-      mysql:
-        image: mysql:8.0
-        ports:
-          - "3306:3306"
-        env:
-          MYSQL_ROOT_PASSWORD: rootpassword
-          MYSQL_DATABASE: testdb
-          MYSQL_USER: testuser
-          MYSQL_PASSWORD: testpassword
-        options: >-
-          --health-cmd="mysqladmin ping --host=localhost --user=root --password=rootpassword"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
-          --volume="./init.sql:/docker-entrypoint-initdb.d/init.sql"
+    # services:
+    #   mysql:
+    #     image: mysql:8.0
+    #     ports:
+    #       - "3306:3306"
+    #     env:
+    #       MYSQL_ROOT_PASSWORD: rootpassword
+    #       MYSQL_DATABASE: testdb
+    #       MYSQL_USER: testuser
+    #       MYSQL_PASSWORD: testpassword
+    #     options: >-
+    #       --health-cmd="mysqladmin ping --host=localhost --user=root --password=rootpassword"
+    #       --health-interval=10s
+    #       --health-timeout=5s
+    #       --health-retries=5
+    #       --volume="./init.sql:/docker-entrypoint-initdb.d/init.sql"
 
     steps:
       - name: Checkout the test repository
         uses: actions/checkout@v4
       
-      - name: Execute init.sql
-        env:
-          DB_HOST: mysql
-          DB_USER: testuser
-          DB_PASSWORD: testpassword
-          DB_NAME: testdb
-        run: |
-         mysql -h $DB_HOST -P 3306 -u $DB_USER -p$DB_PASSWORD --protocol=tcp $DB_NAME < /home/runner/work/robot_framework_code_base_template/robot_framework_code_base_template/init.sql
+      - name: Install MySQL
+        uses: action-setup-mysql@v1.1
+        with:
+          mysql-version: '8.0'
+          mysql-root-password: rootpassword
+          mysql-database: testdb
+          mysql-user: testuser
+          mysql-password: testpassword
       
-      - name: Verify Database Initialization
-        env:
-          DB_HOST: mysql
-          DB_USER: testuser
-          DB_PASSWORD: testpassword
-          DB_NAME: testdb
+      - name: Wait for MySQL to be ready
         run: |
-          # Exemplo de verificação - contar usuários
-          mysql -h $DB_HOST -u $DB_USER -p$DB_PASSWORD $DB_NAME -e "SELECT COUNT(*) FROM users;"
+          TIMEOUT=60  # Tempo máximo de espera em segundos
+          INTERVAL=5  # Intervalo entre as tentativas
+          COUNT=0
+      
+          until mysql -h 127.0.0.1 -u root --password=rootpassword -e "SELECT 1"; do
+            COUNT=$((COUNT + 1))
+            if [ $COUNT -ge $((TIMEOUT / INTERVAL)) ]; then
+              echo "MySQL is not ready after waiting for $TIMEOUT seconds."
+              exit 1  # Falha caso o MySQL não fique pronto dentro do timeout
+            fi
+            echo "Waiting for MySQL to be ready... ($COUNT)"
+            sleep $INTERVAL
+          done
+          echo "MySQL is ready!"
+  
+      - name: Run the tests
+        run: robot -d ./reports --output output.xml -v HEADLESS:true -v PIPELINE:true ./tests
 
       - name: Install Python 3.12
         uses: actions/setup-python@v5
