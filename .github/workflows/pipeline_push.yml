@@ -14,11 +14,10 @@ jobs:
 
     services:
       mysql:
-        image: mysql:latest
+        image: mysql:8.0
         ports:
           - "3306:3306"
         env:
-           # For real testing environments these variables must be secret and not exposed.
           MYSQL_ROOT_PASSWORD: rootpassword
           MYSQL_DATABASE: testdb
           MYSQL_USER: testuser
@@ -28,26 +27,11 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
+          -v ${{ github.workspace }}/init.sql:/docker-entrypoint-initdb.d/init.sql
 
     steps:
       - name: Checkout the test repository
         uses: actions/checkout@v4
-      
-      - name: Initialize MySQL
-        env:
-          MYSQL_PWD: rootpassword
-        run: |
-          # Mostra o conteúdo do arquivo para debug
-          cat "${{ github.workspace }}/init.sql"
-          
-          # Obtém o ID do container MySQL
-          MYSQL_CONTAINER=$(docker ps -q -f "ancestor=mysql:8.0")
-          
-          # Copia o conteúdo do init.sql diretamente via docker exec
-          docker exec $MYSQL_CONTAINER bash -c "cat > /tmp/init.sql" < "${{ github.workspace }}/init.sql"
-          
-          # Executa o script SQL
-          docker exec $MYSQL_CONTAINER mysql -u root testdb < /tmp/init.sql
 
       - name: Install Python 3.12
         uses: actions/setup-python@v5
