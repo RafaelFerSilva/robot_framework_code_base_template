@@ -38,6 +38,8 @@ Basic dependêncies for project are on requirements.txt file and use a make_inst
       robot -d ./reports --output output.xml  -v HEADLESS:true -v PIPELINE:true  ./tests
 
 
+## Environment Variables
+We use [python-dotenv](https://github.com/theskumar/python-dotenv) to set environment variables. So we need a file for each environment similar a exampla.env with our environment variables. (Ex: uat.env / rc.env / dev.env)
 
 
 ## Code Coverage
@@ -62,7 +64,7 @@ We have a script to validate tests code coverage and generate markdown report (r
 After executing your Robot Framework tests, you can generate a metrics report by running:
 
     robotmetrics --input .\reports\ --output output.xml
-    
+
 For more options:
 
     robotmetrics --help
