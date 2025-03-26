@@ -1,5 +1,3 @@
--- Initialize BD for tests. Use with docker compose execution
-
 CREATE DATABASE IF NOT EXISTS testdb;
 
 USE testdb;
