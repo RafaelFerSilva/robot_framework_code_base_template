@@ -9,7 +9,7 @@ Resource            ./Common.keywords.resource
 
 
 *** Variables ***
-${LOCAL_SQL_FOLDER}=    ${EXECDIR}/resources/sql/${ENVIRONMENT}
+${LOCAL_SQL_FOLDER}=    ${EXECDIR}/resources/sql/
 
 
 *** Keywords ***
@@ -56,7 +56,6 @@ Connect to application database
     ...    db_password=${DATABASE}[DB_PASSWORD]
     ...    db_host=${DATABASE}[DB_HOST]
     ...    db_port=${DATABASE}[DB_PORT]
-    ...    db_charset=UTF8
 
 Perform a database query
     [Documentation]    Receive a SQL query (String) and execute in connected database.
@@ -66,7 +65,7 @@ Perform a database query
     ...    |    ${response_query}    |    Perform a database query    |    SELECT * FROM Table    |
     [Arguments]    ${query}    ${asDict}=${True}
 
-    ${response_query}=    Query    selectStatement=${query}    returnAsDict=${asDict}
+    ${response_query}=    Query    select_statement=${query}    return_dict=${asDict}
     Log Many    ${response_query}
     RETURN    ${response_query}
 
@@ -77,15 +76,15 @@ Return the contents of the sql local query file and perform the query in the dat
     ...    = Arguments =
     ...    - folder_path -> Path to the folder where the file containing the query is located.
     ...    - sql_file_name -> Name of the file containing the query to be executed.
-    ...    - replace_strings -> Strings for replace in file content if it's necessary
+    ...    - replace_strings -> Strings for replace in file content if it's necessary. For default replace $$ for the list values
     ...
     ...    = Examples =
     ...    Read a local query and execute
     ...    |    ${result}=    |    Return the contents of the sql local query file and perform the query in the database    |    folder    |    file.sql    |    A    B    C    |
     ...
-    [Arguments]    ${folder_path}    ${sql_file_name}    @{replace_strings}    ${asDict}=True
+    [Arguments]    ${sql_file_name}    @{replace_strings}    ${asDict}=True
 
-    ${template}=    Get File    ${LOCAL_SQL_FOLDER}/${folder_path}/${sql_file_name}
+    ${template}=    Get File    ${LOCAL_SQL_FOLDER}/${sql_file_name}
     ${element}=    String Replace    ${template}    @{replace_strings}
     ${item}=    Perform a database query    ${element}    ${asDict}
 

@@ -12,6 +12,22 @@ jobs:
     name: PR E2E Tests
     runs-on: ubuntu-24.04
 
+    services:
+      mysql:
+        image: mysql:latest
+        ports:
+          - "3306:3306"
+        env:
+          MYSQL_ROOT_PASSWORD: rootpassword
+          MYSQL_DATABASE: testdb
+          MYSQL_USER: testuser
+          MYSQL_PASSWORD: testpassword
+        options: >-
+          --health-cmd="mysqladmin ping --host=localhost --user=root --password=rootpassword"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
     steps:
       - name: Checkout the test repository
         uses: actions/checkout@v4
@@ -38,6 +54,14 @@ jobs:
           npm install @playwright/test
           npx playwright install-deps
           rfbrowser init
+      
+      - name: Wait for MySQL to be ready
+        run: |
+          until docker exec $(docker ps -q -f "ancestor=mysql") mysqladmin ping --host=localhost --user=root --password=rootpassword --silent; do
+            echo "Waiting for MySQL..."
+            sleep 5
+          done
+          echo "MySQL is ready!"
 
       - name: Run the tests
         run: robot -d ./reports --output output.xml  -v HEADLESS:true -v PIPELINE:true  ./tests

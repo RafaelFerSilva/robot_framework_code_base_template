@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.2.2 (Python 3.12.2 on win32)" generated="2025-03-26T08:54:19.124199" rpa="false" schemaversion="5">
+<suite id="s1" name="Robot Framework Code Base Template" source="C:\Users\Rafael\Documents\robot_framework_code_base_template">
+<suite id="s1-s1" name="Test" source="C:\Users\Rafael\Documents\robot_framework_code_base_template\test.robot">
+<test id="s1-s1-t1" name="Testar Conexao Com Postgres" line="5">
+<kw name="Connect To Database" owner="DatabaseLibrary">
+<msg time="2025-03-26T08:54:19.221079" level="INFO">Looking for configuration file: 'resources\db.cfg'</msg>
+<msg time="2025-03-26T08:54:19.221816" level="INFO">Configuration file doesn't exist</msg>
+<msg time="2025-03-26T08:54:19.233633" level="INFO">Connect to DB using : psycopg2.connect(database='testdb', user='testdb', password=***, port='5432', host='host.docker.internal')</msg>
+<msg time="2025-03-26T08:54:40.273610" level="FAIL">OperationalError: connection to server at "host.docker.internal" (10.0.0.101), port 5432 failed: Connection timed out (0x0000274C/10060)
+	Is the server running on that host and accepting TCP/IP connections?
+</msg>
+<arg>psycopg2</arg>
+<arg>testdb</arg>
+<arg>testdb</arg>
+<arg>testpassword</arg>
+<arg>host=host.docker.internal</arg>
+<arg>port=5432</arg>
+<doc>Creates a database connection using the DB API 2.0 ``db_module`` and the parameters provided.
+Along with listed commonly used arguments (`db_name`, `db_host` etc.)
+you can set any other DB module specific parameters as key/value pairs.</doc>
+<status status="FAIL" start="2025-03-26T08:54:19.220467" elapsed="21.056134">OperationalError: connection to server at "host.docker.internal" (10.0.0.101), port 5432 failed: Connection timed out (0x0000274C/10060)
+	Is the server running on that host and accepting TCP/IP connections?
+</status>
+</kw>
+<kw name="Query" owner="DatabaseLibrary">
+<var>@{result}</var>
+<arg>SELECT 'Conectado ao PostgreSQL!';</arg>
+<doc>Runs a query with the ``select_statement`` and returns the result as list of rows.
+The type of row values depends on the database module -
+usually they are tuples or tuple-like objects.</doc>
+<status status="NOT RUN" start="2025-03-26T08:54:40.276844" elapsed="0.000754"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<arg>${result}</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="NOT RUN" start="2025-03-26T08:54:40.277598" elapsed="0.000618"/>
+</kw>
+<kw name="Disconnect From Database" owner="DatabaseLibrary">
+<doc>Disconnects from the database.</doc>
+<status status="NOT RUN" start="2025-03-26T08:54:40.278216" elapsed="0.000699"/>
+</kw>
+<status status="FAIL" start="2025-03-26T08:54:19.218612" elapsed="21.060303">OperationalError: connection to server at "host.docker.internal" (10.0.0.101), port 5432 failed: Connection timed out (0x0000274C/10060)
+	Is the server running on that host and accepting TCP/IP connections?
+</status>
+</test>
+<status status="FAIL" start="2025-03-26T08:54:19.184496" elapsed="21.096711"/>
+</suite>
+<status status="FAIL" start="2025-03-26T08:54:19.149966" elapsed="21.133133"/>
+</suite>
+<statistics>
+<total>
+<stat pass="0" fail="1" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat name="Robot Framework Code Base Template" id="s1" pass="0" fail="1" skip="0">Robot Framework Code Base Template</stat>
+<stat name="Test" id="s1-s1" pass="0" fail="1" skip="0">Robot Framework Code Base Template.Test</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
