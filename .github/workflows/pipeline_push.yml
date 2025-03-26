@@ -76,11 +76,12 @@ jobs:
         run: robot -d ./reports --output output.xml  -v HEADLESS:true -v PIPELINE:true  ./tests
 
       - name: Validate Test Coverage
+        if: always()
         run: |
           python ./resources/libraries/test_coverage_validator.py \
             ./reports/output.xml \
             --min-coverage 80 \
-            --output-dir ./reports/coverage
+            --output-dir ./reports/coverage || exit 1
 
       - name: Upload Push Artifacts
         if: always()
