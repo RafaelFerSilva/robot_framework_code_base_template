@@ -27,30 +27,10 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
-          --volume="./init.sql:/docker-entrypoint-initdb.d/init.sql"
 
     steps:
       - name: Checkout the test repository
         uses: actions/checkout@v4
-      
-      - name: Execute init.sql
-        env:
-          DB_HOST: mysql
-          DB_USER: testuser
-          DB_PASSWORD: testpassword
-          DB_NAME: testdb
-        run: |
-          mysql -h $DB_HOST -P 3306 -u $DB_USER -p$DB_PASSWORD --protocol=tcp $DB_NAME < /home/runner/work/robot_framework_code_base_template/robot_framework_code_base_template/init.sql
-      
-      - name: Verify Database Initialization
-        env:
-          DB_HOST: mysql
-          DB_USER: testuser
-          DB_PASSWORD: testpassword
-          DB_NAME: testdb
-        run: |
-          # Exemplo de verificação - contar usuários
-          mysql -h $DB_HOST -u $DB_USER -p$DB_PASSWORD $DB_NAME -e "SELECT COUNT(*) FROM users;"
 
       - name: Install Python 3.12
         uses: actions/setup-python@v5

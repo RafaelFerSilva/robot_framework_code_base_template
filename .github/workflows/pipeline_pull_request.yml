@@ -12,98 +12,46 @@ jobs:
     name: PR E2E Tests
     runs-on: ubuntu-24.04
 
-    # services:
-    #   mysql:
-    #     image: mysql:8.0
-    #     ports:
-    #       - "3306:3306"
-    #     env:
-    #       MYSQL_ROOT_PASSWORD: rootpassword
-    #       MYSQL_DATABASE: testdb
-    #       MYSQL_USER: testuser
-    #       MYSQL_PASSWORD: testpassword
-    #     options: >-
-    #       --health-cmd="mysqladmin ping --host=localhost --user=root --password=rootpassword"
-    #       --health-interval=10s
-    #       --health-timeout=5s
-    #       --health-retries=5
-    #       --volume="./init.sql:/docker-entrypoint-initdb.d/init.sql"
+    services:
+      mysql:
+        image: mysql:8.0
+        ports:
+          - "3306:3306"
+        env:
+          MYSQL_ROOT_PASSWORD: rootpassword
+          MYSQL_DATABASE: testdb
+          MYSQL_USER: testuser
+          MYSQL_PASSWORD: testpassword
+        options: >-
+          --health-cmd="mysqladmin ping --host=localhost --user=root --password=rootpassword"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
 
     steps:
       - name: Checkout the test repository
         uses: actions/checkout@v4
-      
-      - name: Install MySQL
-        uses: mirromutth/mysql-action@v1.1
-        with:
-          mysql version: '8.0'
-          mysql root password: rootpassword
-          mysql database: testdb
-          mysql user: testuser
-          mysql password: testpassword
-      
-      - name: Wait for MySQL to be ready
-        run: |
-          TIMEOUT=60  # Tempo máximo de espera em segundos
-          INTERVAL=5  # Intervalo entre as tentativas
-          COUNT=0
-      
-          until mysql -h 127.0.0.1 -u root --password=rootpassword -e "SELECT 1"; do
-            COUNT=$((COUNT + 1))
-            if [ $COUNT -ge $((TIMEOUT / INTERVAL)) ]; then
-              echo "MySQL is not ready after waiting for $TIMEOUT seconds."
-              exit 1  # Falha caso o MySQL não fique pronto dentro do timeout
-            fi
-            echo "Waiting for MySQL to be ready... ($COUNT)"
-            sleep $INTERVAL
-          done
-          echo "MySQL is ready!"
-      
-          - name: Install Python 3.12
-          uses: actions/setup-python@v5
-          with:
-            python-version: '3.12'
-        
-      - name: Install system dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libssl-dev libffi-dev python3-dev
-
-      - name: Install Node.js 20.11.1
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20.11.1'
-      
-      - name: Create reports folder
-        run: |
-          mkdir -p reports/coverage
-          mkdir -p reports/robotmetrics
-
-      - name: Install Requirements
-        run: |
-          python -m pip install --upgrade pip
-          pip install -U -r requirements.txt
-          npm install @playwright/test
-          npx playwright install-deps
-          rfbrowser init
   
-      - name: Run the tests
-        run: robot -d ./reports --output output.xml -v HEADLESS:true -v PIPELINE:true ./tests
 
       - name: Install Python 3.12
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      
-      - name: Install system dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libssl-dev libffi-dev python3-dev
 
       - name: Install Node.js 20.11.1
         uses: actions/setup-node@v4
         with:
           node-version: '20.11.1'
+      
+      - name: Install MySQL Client & Python Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mysql-client
+          python -m pip install --upgrade pip
+          pip install mysql-connector-python
+
+      - name: Wait for MySQL and Initialize Database
+        run: python init_db.py
       
       - name: Create reports folder
         run: |
