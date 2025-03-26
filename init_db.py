@@ -5,25 +5,25 @@ DB_HOST = "127.0.0.1"
 DB_USER = "testuser"
 DB_PASSWORD = "testpassword"
 DB_NAME = "testdb"
-INIT_SQL_FILE = "init.sql"  # Caminho do arquivo SQL
+INIT_SQL_FILE = "init.sql"  # SQL file path
 
-# Tempo máximo de espera pelo banco (em segundos)
+# Maximum database waiting time (in seconds)
 TIMEOUT = 60
 INTERVAL = 5
 elapsed_time = 0
 
 while elapsed_time < TIMEOUT:
     try:
-        print("Tentando conectar ao MySQL...")
+        print("Trying to connect to MySQL...")
         conn = mysql.connector.connect(
             host=DB_HOST,
             user=DB_USER,
             password=DB_PASSWORD,
             database=DB_NAME
         )
-        print("✅ Conectado ao MySQL com sucesso!")
+        print("✅ Connected to MySQL successfully!")
 
-        # Executa o script SQL
+        # Execute the SQL script
         cursor = conn.cursor()
         with open(INIT_SQL_FILE, "r") as f:
             sql_commands = f.read()
@@ -34,14 +34,14 @@ while elapsed_time < TIMEOUT:
         conn.commit()
         cursor.close()
         conn.close()
-        print("✅ Banco de dados inicializado com sucesso!")
+        print("✅ Database initialized successfully!")
         break
 
     except mysql.connector.Error as e:
-        print(f"⚠️ Erro ao conectar ao MySQL: {e}")
+        print(f"⚠️ Error connecting to MySQL: {e}")
         elapsed_time += INTERVAL
-        print(f"Aguardando {INTERVAL} segundos antes de tentar novamente...")
+        print(f"Aguardando {INTERVAL} seconds before trying again...")
         time.sleep(INTERVAL)
 else:
-    print("⛔ Timeout! O MySQL não está disposível.")
+    print("⛔ Timeout! MySQL is not available.")
     exit(1)
