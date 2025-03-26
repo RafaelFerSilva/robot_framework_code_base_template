@@ -1,71 +1,115 @@
-# ROBOT FRAMEWORK CODE BASE TEMPLATE
+# Robot Framework Test Automation Template
 
-## Prerequisites
+## 🚀 Project Overview
+This project provides a comprehensive test automation framework using Robot Framework, designed to streamline end-to-end testing across different environments.
 
-Browser Library installation requires both Python and NodeJs
+## 📋 Prerequisites
 
-Install [Python™](https://www.python.org/downloads/)
+### System Requirements
+- [Python™](https://www.python.org/downloads/) (3.8+)
+- [Node.js®](https://nodejs.org/en/download/) (14+)
 
-Install [Node.js®](https://nodejs.org/en/download/)
+### Recommended Development Environment
+- Python 3.10 or later
+- Node.js 18 or later
 
-## Environment
+## 🛠 Setup and Installation
 
-Create a python virtual environment:
+### 1. Clone the Repository
+```bash
+git clone https://github.com/RafaelFerSilva/robot_framework_code_base_template.git
+cd robot_framework_code_base_template
+```
 
-    python3 -m venv venv
+### 2. Create Virtual Environment
+```bash
+# Windows
+python -m venv venv
+venv\Scripts\activate
 
-Active environment:
+# Linux/MacOS
+python3 -m venv venv
+source venv/bin/activate
+```
 
-- Windows
-    
-      venv\script\activate
+### 3. Install Dependencies
+```bash
+python make_install.py
+```
 
-- Linux/MacOS
+This script will:
+- Install project dependencies
+- Initialize RobotFramework Browser Library
+- Set up the testing environment
 
-      source venv/bin/activate
+## 🧪 Running Tests
 
-## Dependências.
-Basic dependêncies for project are on requirements.txt file and use a make_install.py script for install and initializate the robotframework-browser library.
+### Local Execution
+```bash
+# Standard mode
+robot -d ./reports --output output.xml ./tests
 
-    python make_install.py
+# Verbose mode
+robot -d ./reports --output output.xml -L TRACE ./tests
+```
 
+### Pipeline Execution
+```bash
+robot -d ./reports --output output.xml -v HEADLESS:true -v PIPELINE:true ./tests
+```
 
-## Run the Tests
-  ### Local
-      robot -d ./reports --output output.xml ./tests
-  
-  ### Pipeline
-      robot -d ./reports --output output.xml  -v HEADLESS:true -v PIPELINE:true  ./tests
+## 🌐 Environment Configuration
 
+### Environment Variables
+We use [python-dotenv](https://github.com/theskumar/python-dotenv) for environment variable management.
 
-## Environment Variables
-We use [python-dotenv](https://github.com/theskumar/python-dotenv) to set environment variables. So we need a file for each environment similar a exampla.env with our environment variables. (Ex: uat.env / rc.env / dev.env)
+Create environment-specific `.env` files:
+- `dev.env`
+- `uat.env`
+- `rc.env`
+- `prod.env`
 
+Refer to `example.env` for variable structure.
 
-## Code Coverage
-We have a script to validate tests code coverage and generate markdown report (resources\libraries\test_coverage_validator.py)
+## 📊 Test Coverage and Reporting
 
-    # Basic mode
-    python .\resources\libraries\test_coverage_validator.py .\reports\output.xml
+### Code Coverage Validation
+```bash
+# Basic usage
+python resources/libraries/test_coverage_validator.py reports/output.xml
 
-    # Customizing minimum coverage
-    python .\resources\libraries\test_coverage_validator.py .\reports\output.xml --min-coverage 85
+# Custom minimum coverage
+python resources/libraries/test_coverage_validator.py reports/output.xml --min-coverage 85
 
-    # Setting Report Directory
-    python .\resources\libraries\test_coverage_validator.py .\reports\output.xml --output-dir custom_reports --min-coverage 85
+# Custom report directory
+python resources/libraries/test_coverage_validator.py reports/output.xml --output-dir custom_reports
+```
 
-    # Silent mode
-    python .\resources\libraries\test_coverage_validator.py .\reports\output.xml --quiet
+### Robot Metrics
+Generate detailed test execution metrics:
+```bash
+# Standard report
+robotmetrics --input reports/ --output output.xml
 
-## Robot Metrics Usage
+# Advanced options
+robotmetrics --help
+```
 
-[robotframework-metrics](https://github.com/adiralashiva8/robotframework-metrics )
+## 🤝 Contributing
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-After executing your Robot Framework tests, you can generate a metrics report by running:
+## 📜 License
+Distributed under the MIT License. See `LICENSE` for more information.
 
-    robotmetrics --input .\reports\ --output output.xml
+## 📞 Contact
+Rafael Fernandes da Silva
 
-For more options:
+E-mail: rafatecads@gmail.com
 
-    robotmetrics --help
+linkedin: [Rafael Silva](https://www.linkedin.com/in/rafael-silva-8a10334b/)
 
+Project Link: [robot_framework_code_base_template](https://github.com/RafaelFerSilva/robot_framework_code_base_template#)
