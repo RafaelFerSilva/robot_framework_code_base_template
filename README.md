@@ -56,6 +56,15 @@ We use [python-dotenv](https://github.com/theskumar/python-dotenv) for environme
 
 Refer to `example.env` for variable structure.
 
+For running examples tests with database We need crete a uat.env file for example to config database for uat environment, the same for other environments (rc.env, prod.env)
+
+    DB_NAME=testdb
+    DB_USER=testuser
+    DB_PASSWORD=testpassword
+    DB_HOST=localhost
+    DB_PORT=3306
+
+
 ### Configuration Variables
 Configuration is managed through `resources/config_variables.py`:
 
