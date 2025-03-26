@@ -32,26 +32,6 @@ jobs:
     steps:
       - name: Checkout the test repository
         uses: actions/checkout@v4
-      
-      - name: Wait for MySQL to be ready
-        timeout-minutes: 2  # Timeout de 2 minutos
-        run: |
-          max_attempts=24  # 24 * 5 segundos = 2 minutos
-          attempt=0
-          
-          while [ $attempt -lt $max_attempts ]; do
-            if docker exec $(docker ps -q -f "ancestor=mysql") mysqladmin ping --host=localhost --user=root --password=root --silent; then
-              echo "MySQL is ready!"
-              exit 0
-            fi
-            
-            echo "Waiting for MySQL... (Attempt $((attempt+1))/$max_attempts)"
-            sleep 5
-            attempt=$((attempt+1))
-          done
-          
-          echo "MySQL did not become ready in time"
-          exit 1
 
       - name: Install Python 3.12
         uses: actions/setup-python@v5
