@@ -27,6 +27,7 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
+          --volumes=./init.sql:/docker-entrypoint-initdb.d/init.sql
 
     steps:
       - name: Checkout the test repository
@@ -39,7 +40,7 @@ jobs:
           DB_PASSWORD: testpassword
           DB_NAME: testdb
         run: |
-          mysql -h $DB_HOST -P 3306 -u $DB_USER -p$DB_PASSWORD --protocol=tcp $DB_NAME < /home/runner/work/robot_framework_code_base_template/robot_framework_code_base_template/init.sql
+         mysql -h $DB_HOST -P 3306 -u $DB_USER -p$DB_PASSWORD --protocol=tcp $DB_NAME < /home/runner/work/robot_framework_code_base_template/robot_framework_code_base_template/init.sql
       
       - name: Verify Database Initialization
         env:
