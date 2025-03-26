@@ -180,6 +180,11 @@ robotmetrics --input reports/ --output output.xml
 robotmetrics --help
 ```
 
+We create a step on pipeline_push.html to register metrics reports on githubpage. After Push to main branch we runner tests and register report.
+
+### GitHub Page Report
+[robot_framework_code_base_template](https://rafaelfersilva.github.io/robot_framework_code_base_template/)
+
 ![Robot Metrics Report](images/image-1.png)
 
 ## ⚠️ Important Notes
