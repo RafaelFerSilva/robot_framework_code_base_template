@@ -35,16 +35,21 @@ Set language
     ${LANGUAGE_DIC}=    Convert To Dictionary    ${FILE}
     Set Global Variable    ${LANGUAGE}    ${LANGUAGE_DIC}
 
-Define test data by language
+Set test URL
+    [Arguments]   ${env}=${ENVIRONMENT}
+
+    VAR    ${URL}    ${URLS}[${env}]
+    Set Global Variable    ${URL}    ${URLS}[${env}]
+
+Define test data
     [Documentation]    Keyword with the objective of identifying *Language* and *URL* on which the tests will be executed.
     ...    This keyword should preferably be used before executing the test suites
     ...
     ...    = Examples =
-    ...    | Define test data by language |    PT    |
+    ...    | Define test data |    PT    |
     [Arguments]    ${set_language_file_name}=${LANG}    ${env}=${ENVIRONMENT}
 
-    VAR    ${URL}    ${URLS}[${env}]
-    Set Global Variable    ${URL}    ${URLS}[${env}]
+    Set test URL    ${env}
     Set language    ${set_language_file_name}
 
 Set Mobile device to context
