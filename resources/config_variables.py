@@ -1,4 +1,4 @@
-
+DB_API_MODULE_NAME="pymysql"
 BROWSER_TIMEOUT = "40"
 BROWSER = "chromium"
 HEADLESS = False

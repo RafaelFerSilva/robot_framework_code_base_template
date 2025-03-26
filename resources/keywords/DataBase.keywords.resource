@@ -47,7 +47,7 @@ Connect to application database
     ...    %{DB_PASSWORD}
     ...    %{DB_HOST}
     ...    %{DB_PORT}
-    ...    %{DB_API_MODULE_NAME}
+    ...    ${DB_API_MODULE_NAME}
 
     Connect To Database
     ...    db_module=${DATABASE}[DB_API_MODULE_NAME]

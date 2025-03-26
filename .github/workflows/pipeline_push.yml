@@ -64,6 +64,12 @@ jobs:
           echo "MySQL is ready!"
 
       - name: Run the tests
+        env:
+          DB_NAME: testdb
+          DB_USER: testuser
+          DB_PASSWORD: testpassword
+          DB_HOST: localhost
+          DB_PORT: ${{ job.services.mysql.ports[3306] }}
         run: robot -d ./reports --output output.xml  -v HEADLESS:true -v PIPELINE:true  ./tests
 
       - name: Validate Test Coverage
