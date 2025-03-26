@@ -33,36 +33,21 @@ jobs:
       - name: Checkout the test repository
         uses: actions/checkout@v4
       
-      - name: Prepare init.sql
-        run: |
-          # Verifica se o arquivo existe
-          if [ ! -f "${{ github.workspace }}/init.sql" ]; then
-            echo "init.sql not found in the repository"
-            exit 1
-          fi
-          
-          # Mostra o conteúdo do arquivo para verificação
-          cat "${{ github.workspace }}/init.sql"
-
       - name: Initialize MySQL
         env:
           MYSQL_PWD: rootpassword
         run: |
-          # Espera o MySQL estar completamente pronto
-          for i in {1..30}; do
-            if docker exec $(docker ps -q -f "ancestor=mysql:8.0") mysqladmin ping -h localhost -u root --silent; then
-              echo "MySQL is ready"
-              break
-            fi
-            echo "Waiting for MySQL to be ready... ($i/30)"
-            sleep 2
-          done
-
-          # Copia o init.sql diretamente
-          docker cp "${{ github.workspace }}/init.sql" $(docker ps -q -f "ancestor=mysql:8.0"):/tmp/init.sql
-
+          # Mostra o conteúdo do arquivo para debug
+          cat "${{ github.workspace }}/init.sql"
+          
+          # Obtém o ID do container MySQL
+          MYSQL_CONTAINER=$(docker ps -q -f "ancestor=mysql:8.0")
+          
+          # Copia o conteúdo do init.sql diretamente via docker exec
+          docker exec $MYSQL_CONTAINER bash -c "cat > /tmp/init.sql" < "${{ github.workspace }}/init.sql"
+          
           # Executa o script SQL
-          docker exec $(docker ps -q -f "ancestor=mysql:8.0") mysql -u root testdb < /tmp/init.sql
+          docker exec $MYSQL_CONTAINER mysql -u root testdb < /tmp/init.sql
 
       - name: Install Python 3.12
         uses: actions/setup-python@v5
