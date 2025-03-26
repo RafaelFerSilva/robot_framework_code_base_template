@@ -12,6 +12,22 @@ jobs:
     name: Push E2E Tests
     runs-on: ubuntu-24.04
 
+    services:
+      mysql:
+        image: mysql:8.0
+        ports:
+          - "3306:3306"
+        env:
+          MYSQL_ROOT_PASSWORD: rootpassword
+          MYSQL_DATABASE: testdb
+          MYSQL_USER: testuser
+          MYSQL_PASSWORD: testpassword
+        options: >-
+          --health-cmd="mysqladmin ping --host=localhost --user=root --password=rootpassword"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
     steps:
       - name: Checkout the test repository
         uses: actions/checkout@v4
@@ -25,6 +41,16 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20.11.1'
+      
+      - name: Install MySQL Client & Python Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mysql-client
+          python -m pip install --upgrade pip
+          pip install mysql-connector-python
+
+      - name: Wait for MySQL and Initialize Database
+        run: python init_db.py
       
       - name: Create reports folder
         run: |
@@ -40,6 +66,13 @@ jobs:
           rfbrowser init
 
       - name: Run the tests
+        env:
+          # For real testing environments these variables must be secret and not exposed.
+          DB_NAME: testdb
+          DB_USER: testuser
+          DB_PASSWORD: testpassword
+          DB_HOST: localhost
+          DB_PORT: ${{ job.services.mysql.ports[3306] }}
         run: robot -d ./reports --output output.xml  -v HEADLESS:true -v PIPELINE:true  ./tests
 
       - name: Validate Test Coverage

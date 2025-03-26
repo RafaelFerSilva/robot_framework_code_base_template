@@ -1,11 +1,7 @@
-
+DB_API_MODULE_NAME="pymysql"
 BROWSER_TIMEOUT = "40"
 BROWSER = "chromium"
 HEADLESS = False
-RESOLUTION_HEIGHT = "1366"
-RESOLUTION_WIDTH = "768"
-MOBILE = False
-DEVICE_NAME = "Nexus 5"
 
 PIPELINE = False
 ENVIRONMENT = "UAT"
@@ -20,6 +16,8 @@ URLS = {
 
 LANG = "pt"
 
+MOBILE = False
+DEVICE_NAME = "Nexus 5"
 
 NEW_CONTEXT = {
     "acceptDownloads": True,
