@@ -29,6 +29,7 @@ jobs:
       - name: Create reports folder
         run: |
           mkdir -p reports/coverage
+          mkdir -p reports/robotmetrics
 
       - name: Install Requirements
         run: |
@@ -82,5 +83,6 @@ jobs:
           path: |
             ./reports
             ./reports/coverage
+            ./reports/robotmetrics
           retention-days: 5
           if-no-files-found: ignore
