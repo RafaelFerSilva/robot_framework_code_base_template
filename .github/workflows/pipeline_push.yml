@@ -32,6 +32,15 @@ jobs:
     steps:
       - name: Checkout the test repository
         uses: actions/checkout@v4
+      
+      - name: Copy init.sql to MySQL container
+        run: |
+          docker cp ${{ github.workspace }}/init.sql $(docker ps -q -f "ancestor=mysql:8.0"):/docker-entrypoint-initdb.d/init.sql
+
+      - name: Wait for MySQL to initialize
+        run: |
+          docker exec $(docker ps -q -f "ancestor=mysql:8.0") mysql -u root -prootpassword -e "SELECT 1" > /dev/null 2>&1
+          docker exec $(docker ps -q -f "ancestor=mysql:8.0") mysql -u root -prootpassword testdb < /docker-entrypoint-initdb.d/init.sql
 
       - name: Install Python 3.12
         uses: actions/setup-python@v5
