@@ -27,7 +27,7 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
-          -v ${{ github.workspace }}/init.sql:/docker-entrypoint-initdb.d/init.sql
+          -v ${{ github.workspace }}/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
 
     steps:
       - name: Checkout the test repository
