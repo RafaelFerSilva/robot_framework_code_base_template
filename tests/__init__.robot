@@ -8,7 +8,6 @@ Resource            ${EXECDIR}/resources/keywords/DataBase.keywords.resource
 Suite Setup         Run Keywords
 ...                     Set Environment Project Variables
 ...                     pipeline=${PIPELINE}
-...                     environment=${ENVIRONMENT}
-...                     print_variables=True    AND
+...                     environment=${ENVIRONMENT}    AND
 ...                     Connect to application database
 Suite Teardown      Disconnect From Database
