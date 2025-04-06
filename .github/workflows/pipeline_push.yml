@@ -72,7 +72,7 @@ jobs:
           DB_PASSWORD: testpassword
           DB_HOST: localhost
           DB_PORT: ${{ job.services.mysql.ports[3306] }}
-        run: robot -d ./reports --output output.xml  -v HEADLESS:true -v PIPELINE:true  ./tests
+        run: pabot --processes 4 -d ./reports --output output.xml -v HEADLESS:true -v PIPELINE:true  --testlevelsplit ./tests
 
       - name: Validate Test Coverage
         if: always()
@@ -85,6 +85,10 @@ jobs:
       - name: Metrics
         if: always()
         run: robotmetrics --input reports/ --output output.xml --metrics-report-name index.html
+      
+      - name: Generate Documentation
+        if: always()
+        run: python generate_docs.py
 
       - name: Upload Push Artifacts
         if: always()
@@ -95,6 +99,7 @@ jobs:
             ./reports
             ./reports/coverage
             ./reports/robotmetrics
+            ./documentation
           retention-days: 3
           if-no-files-found: ignore
 
@@ -113,7 +118,7 @@ jobs:
           uses: actions/download-artifact@v4
           with:
             name: push-test-results
-            path: ./reports
+            path: ./documentation
 
         - name: Setup Pages
           uses: actions/configure-pages@v5
@@ -121,7 +126,7 @@ jobs:
         - name: Upload artifact
           uses: actions/upload-pages-artifact@v3
           with:
-            path: './reports'
+            path: './documentation'
 
         - name: Deploy to GitHub Pages
           id: deployment

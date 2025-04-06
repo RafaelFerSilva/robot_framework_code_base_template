@@ -197,6 +197,9 @@ robot -d ./reports --output output.xml ./tests
 
 # Verbose mode
 robot -d ./reports --output output.xml -L TRACE ./tests
+
+# Parallel execution
+pabot --processes 4 -d ./reports --output output.xml --testlevelsplit ./tests 
 ```
 
 ## 📊 Test Coverage and Reporting
