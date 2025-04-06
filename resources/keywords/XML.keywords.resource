@@ -1,26 +1,38 @@
-*** Settings ***
-Documentation       Keywords relateds a XML files
+Here's the corrected XML.keywords.resource file with documentation in English:
 
-Resource            ./Common.keywords.resource
+*** Settings ***
+Documentation     XML keywords module for test automation
+...               
+...               This module contains keywords for working with XML files.
+...               It provides functionality for:
+...               - Extracting information from XML files
+...               - Parsing XML content
+...               - Retrieving specific XML elements and attributes
+...               
+...               Dependencies:
+...               - XML library
+
+Library             OperatingSystem
 Library             XML
 
 
 *** Keywords ***
-Return XML infNFe id
-    [Documentation]    This keyword accesses the content of an xml file and returns the id (barcode) of the infNFe element.
-    [Arguments]    ${xml_file_name}
-
-    ${xml}=    Return the file path from the files folder    xml    ${xml_file_name}
-    ${FILE_CONTENT}=    Get File    ${xml}
-    ${root}=    Parse XML    ${FILE_CONTENT}
-    ${element}=    XML.Get Element    ${root}    NFe/infNFe
-    ${id}=    Get Element Attribute    ${element}    Id
-    ${barcode}=    Fetch From Right    ${id}    e
-
-    RETURN    ${barcode}
 
 Return XML File Element Text
-    [Documentation]    This keyword accesses the content of an xml file and returns the element text by path.
+    [Documentation]    Extracts the text content of a specific element from an XML file.
+    ...
+    ...    Arguments:
+    ...    - xml_file_name: Name of the XML file to process
+    ...    - element_path: XPath to the element whose text should be extracted
+    ...
+    ...    Returns:
+    ...    - The text content of the specified element
+    ...
+    ...    Behavior:
+    ...    - Reads the XML file from the resources/files/xml directory
+    ...    - Parses the XML content
+    ...    - Locates the element using the provided path
+    ...    - Returns the text content of the element
     [Arguments]    ${xml_file_name}    ${element_path}
 
     ${FILE_CONTENT}=    Get File    ${EXECDIR}/resources/files/xml/${xml_file_name}
