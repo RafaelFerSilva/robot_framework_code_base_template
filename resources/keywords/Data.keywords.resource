@@ -1,5 +1,13 @@
 *** Settings ***
-Documentation    keywords related to creating data for tests
+Documentation     Data keywords module for test automation
+...               
+...               This module contains keywords related to creating and manipulating test data.
+...               It provides functionality for:
+...               - Generating Brazilian phone numbers (mobile and landline)
+...               - Formatting and manipulating dates
+...               - Formatting Brazilian documents (CPF/CNPJ)
+...               - Generating random data
+...               - Formatting values according to Brazilian standards
 
 Library        DateTime
 Library        FakerLibrary     locale=pt_BR
@@ -23,10 +31,13 @@ Resource       ./Common.keywords.resource
 *** Keywords ***
 
 Return a DDD from Brazil
-    [Documentation]    Return a Brazilian Phone DDD.
-    ...                Read a Json file ddd_brasil.json and return a randon DDD.
+    [Documentation]    Returns a random Brazilian phone area code (DDD).
+    ...                Reads a JSON file ddd_brasil.json and returns a random DDD.
     ...
-    ...    = Examples =
+    ...    Returns:
+    ...    - A random Brazilian area code (DDD)
+    ...
+    ...    Example:
     ...    |    ${ddd}=    |    Return a DDD from Brazil    |            |
     ...    |    Log        |    ${ddd}                      |    19      |
     ${file}=    Return the file path from the files folder    json    ddd_brasil.json
@@ -39,23 +50,32 @@ Return a DDD from Brazil
     RETURN    ${ddd}
 
 Return a Brazilian cell phone number
-    [Documentation]    Return a Brazilian cell phone number
+    [Documentation]    Generates a random Brazilian cell phone number.
     ...
-    ...     = Examples =
-    ...     |    ${cell}    |    Return a Brazilian cell phone number    |                        |
-    ...     |    Log        |    ${cell}                                 |    (64) 99595-3867     | 
+    ...    Returns:
+    ...    - A formatted Brazilian cell phone number
+    ...
+    ...    Example:
+    ...    |    ${cell}    |    Return a Brazilian cell phone number    |                        |
+    ...    |    Log        |    ${cell}                                 |    (64) 99595-3867     | 
     ${DDD}=               Return a DDD from Brazil
     ${TELEFONE_START}=    FakerLibrary.Random Number    digits=3    fix_len=3
     ${TELEFONE_FINAL}=    FakerLibrary.Random Number    digits=4    fix_len=4
     RETURN    (${DDD}) 99${TELEFONE_START}-${TELEFONE_FINAL}
 
 Return cell phone formatted with () and - for cell phone with 11 characters
-    [Documentation]    Receive a number and return the same in Brazilian cell phone standart
+    [Documentation]    Formats a number into Brazilian cell phone standard format.
     ...
-    ...    = Examples =
+    ...    Arguments:
+    ...    - celular: Cell phone number (11 digits)
+    ...
+    ...    Returns:
+    ...    - Formatted cell phone number
+    ...
+    ...    Example:
     ...    |    ${mobile}=    |    Return cell phone formatted with () and - for cell phone with 11 characters    |    19999985654    |
-    ...    = Return =
-    ...    | ${module}    |    (19) 99998-5654
+    ...    Returns:
+    ...    |    (19) 99998-5654
     [Arguments]    ${celular}
 
     ${fone_final}=    Get Substring    ${celular}    -4
@@ -66,30 +86,47 @@ Return cell phone formatted with () and - for cell phone with 11 characters
     RETURN    ${mobile}
 
 Return a Brazilian landline number
-    [Documentation]    Return a Brazilian landline number.
+    [Documentation]    Generates a random Brazilian landline phone number.
     ...
-    ...     = Examples =
-    ...     |    ${phone}   |    Return a Brazilian landline number    |                        |
-    ...     |    Log        |    ${phone}                              |    (22) 3981-3969      | 
+    ...    Returns:
+    ...    - A formatted Brazilian landline number
+    ...
+    ...    Example:
+    ...    |    ${phone}   |    Return a Brazilian landline number    |                        |
+    ...    |    Log        |    ${phone}                              |    (22) 3981-3969      | 
     ${DDD}=               Return a DDD from Brazil
     ${TELEFONE_START}=    FakerLibrary.Random Number    digits=3    fix_len=3
     ${TELEFONE_FINAL}=    FakerLibrary.Random Number    digits=4    fix_len=4
     RETURN    (${DDD}) 3${TELEFONE_START}-${TELEFONE_FINAL}
 
 Return a date with pt-BR format
-    [Documentation]    Returns a date of birth in Brazilian format, day-month-year and with a minimum/maximum period related to age. Default 18 years
+    [Documentation]    Generates a date in Brazilian format (day-month-year) with a minimum/maximum age range.
     ...
-    ...     = Examples =
-    ...     |    ${date}    |    Return a date with pt-BR format    |                        |
-    ...     |    Log        |    ${date}                            |    26-03-1961          |
+    ...    Arguments:
+    ...    - min: Minimum age (default: 18)
+    ...    - max: Maximum age (default: 100)
+    ...
+    ...    Returns:
+    ...    - Date in DD-MM-YYYY format
+    ...
+    ...    Example:
+    ...    |    ${date}    |    Return a date with pt-BR format    |                        |
+    ...    |    Log        |    ${date}                            |    26-03-1961          |
     [Arguments]        ${min}=18         ${max}=100
     ${date}=    FakerLibrary.Date_Of_Birth                minimum_age=${min}    maximum_age=${max}
     ${format_date}=    Format a date for the pt-BR system    ${date}
     RETURN    ${format_date}
 
 Add or Decrease years to current date
-    [Documentation]     We return the date to the current date and add or subtract a value in years. The value changes directly in the year of the date.
-    ...         We take the year and perform the calculation using the arithmetic operator passed as a file
+    [Documentation]    Adds or subtracts years from the current date.
+    ...    Takes the current year and performs the calculation using the provided arithmetic operator.
+    ...
+    ...    Arguments:
+    ...    - anos_a_alterar: Number of years to add or subtract
+    ...    - operador_aritmetico: Arithmetic operator to use (+ or -)
+    ...
+    ...    Returns:
+    ...    - Modified date in DD/MM/YYYY format
     [Arguments]     ${anos_a_alterar}   ${operador_aritmetico}   
 
     ${data} =	Get Current Date	result_format=datetime
@@ -99,7 +136,11 @@ Add or Decrease years to current date
     RETURN    ${day}/${month}/${data.year ${operador_aritmetico} ${anos_a_alterar}}
 
 Return current date
-    [Documentation]     Returns the current date and can be used as a test variable ${DATA_ACTUAL} set as return by the keyword
+    [Documentation]    Returns the current date in DD/MM/YYYY format.
+    ...    Also sets a test variable ${DATA_ACTUAL} with the current date.
+    ...
+    ...    Returns:
+    ...    - Current date in DD/MM/YYYY format
     ${data} =	Get Current Date	result_format=datetime
     ${month}=    Set Variable If    ${data.month} < 10        0${data.month}    ${data.month}
     ${day}=    Set Variable If    ${data.day} < 10        0${data.day}    ${data.day}
@@ -107,13 +148,27 @@ Return current date
    RETURN    ${day}/${month}/${data.year}
 
 Increment a date
-    [Documentation]    The method works in the receive and return format for "%d/%m/%Y", example: 03/07/1998.
+    [Documentation]    Adds a specified number of days to a date.
+    ...    Works with dates in DD/MM/YYYY format.
+    ...
+    ...    Arguments:
+    ...    - dataAtual: Current date in DD/MM/YYYY format
+    ...    - quantidadeDias: Number of days to add
+    ...
+    ...    Returns:
+    ...    - New date in DD/MM/YYYY format
     [Arguments]    ${dataAtual}    ${quantidadeDias}
     ${novaData}=             Add Time To Date    ${dataAtual}    ${quantidadeDias} days    date_format=%d/%m/%Y    result_format=%d/%m/%Y
    RETURN    ${novaData}
 
 Add days to current date
-    [Documentation]    The method receives the current date and adds the days defined in the argument
+    [Documentation]    Adds a specified number of days to the current date.
+    ...
+    ...    Arguments:
+    ...    - quantidade_dias: Number of days to add
+    ...
+    ...    Returns:
+    ...    - New date with all separators removed (DDMMYYYY format)
     [Arguments]         ${quantidade_dias}
 
     ${data_atual}=          Return current date    
@@ -122,6 +177,13 @@ Add days to current date
    RETURN    ${nova_data}
 
 Format a CNPJ
+    [Documentation]    Formats a CNPJ number with proper separators.
+    ...
+    ...    Arguments:
+    ...    - cnpj: CNPJ number (14 digits)
+    ...
+    ...    Returns:
+    ...    - Formatted CNPJ (XX.XXX.XXX/XXXX-XX)
     [Arguments]    ${cnpj}
 
     ${bloco_1}=        Get Substring    ${cnpj}    0    2
@@ -133,6 +195,13 @@ Format a CNPJ
     RETURN    ${bloco_1}.${bloco_2}.${bloco_3}/${bloco_4}-${bloco_5}
 
 Format a CPF
+    [Documentation]    Formats a CPF number with proper separators.
+    ...
+    ...    Arguments:
+    ...    - cpf: CPF number (11 digits)
+    ...
+    ...    Returns:
+    ...    - Formatted CPF (XXX.XXX.XXX-XX)
     [Arguments]    ${cpf}
 
     ${bloco_1}=        Get Substring    ${cpf}    0    3
@@ -143,6 +212,13 @@ Format a CPF
     RETURN    ${bloco_1}.${bloco_2}.${bloco_3}-${bloco_4}
 
 Format CPF/CNPJ document
+    [Documentation]    Automatically formats a document number as CPF or CNPJ based on its length.
+    ...
+    ...    Arguments:
+    ...    - documento: Document number (CPF or CNPJ)
+    ...
+    ...    Returns:
+    ...    - Formatted document (CPF or CNPJ)
     [Arguments]    ${documento}
 
     ${doc}=    Set Variable    ${documento}
@@ -157,12 +233,25 @@ Format CPF/CNPJ document
     RETURN     ${doc}
 
 Return the month by number
+    [Documentation]    Returns the month name in Portuguese based on its number.
+    ...
+    ...    Arguments:
+    ...    - num_mes: Month number (1-12)
+    ...
+    ...    Returns:
+    ...    - Month name in Portuguese
     [Arguments]    ${num_mes}
     ${string_num}=    Convert To String    ${num_mes}   
     RETURN   ${MESES}[${string_num}]
 
 Return a random group of letters
-    [Documentation]    The argument ${number} is the number of characters we want in the string
+    [Documentation]    Generates a random string of letters with the specified length.
+    ...
+    ...    Arguments:
+    ...    - number: Number of characters to generate
+    ...
+    ...    Returns:
+    ...    - Random string of letters
     [Arguments]    ${number}
     ${grupo}=   Set Variable    ${EMPTY}
     FOR  ${num}  IN RANGE  ${number}
@@ -172,40 +261,47 @@ Return a random group of letters
     RETURN    ${grupo}
 
 Format value to Brazilian decimal
+    [Documentation]    Formats a numeric value to Brazilian decimal format (using comma as decimal separator).
+    ...
+    ...    Arguments:
+    ...    - valor: Numeric value to format
+    ...
+    ...    Returns:
+    ...    - Value formatted in Brazilian decimal format (X.XXX,XX)
     [Arguments]    ${valor}
-    # Armazenar o valor original para log
+    # Store the original value for logging
     Log   Valor original recebido: ${valor}
     
-    # Converter explicitamente para string
+    # Explicitly convert to string
     ${valor_str} =    Convert To String    ${valor}
     
-    # Se for um objeto Decimal como string, extrair o valor numérico
+    # If it's a Decimal object as string, extract the numeric value
     ${decimal_match} =    Run Keyword And Return Status    Should Match Regexp    ${valor_str}    .*Decimal\\('.*'\\).*
     IF    ${decimal_match}
         ${valor_str} =    Evaluate    ''.join([c for c in "${valor_str}" if c.isdigit() or c == '.' or c == ','])
     END
     
-    # Verificar formato atual
+    # Check current format
     ${tem_virgula} =    Run Keyword And Return Status    Should Contain    ${valor_str}    ,
     
-    # Converter para float
+    # Convert to float
     IF    ${tem_virgula}
-        # Formato brasileiro (1.234,56) -> formato numérico (1234.56)
+        # Brazilian format (1.234,56) -> numeric format (1234.56)
         ${valor_num_str} =    Replace String    ${valor_str}    .    ${EMPTY}
         ${valor_num_str} =    Replace String    ${valor_num_str}    ,    .
     ELSE
-        # Já está em formato numérico ou americano
+        # Already in numeric or American format
         ${valor_num_str} =    Set Variable    ${valor_str}
     END
     
-    # Tentar converter para número
+    # Try to convert to number
     TRY
         ${valor_num} =    Convert To Number    ${valor_num_str}
         
-        # Formatar no padrão brasileiro
+        # Format in Brazilian standard
         ${valor_formatado} =    Evaluate    "{:,.2f}".format(${valor_num}).replace(",", "X").replace(".", ",").replace("X", ".")
     EXCEPT
-        # Em caso de erro, retornar o valor original
+        # In case of error, return the original value
         ${valor_formatado} =    Set Variable    ${valor_str}
         Log   Erro ao converter para número. Usando valor original.
     END

@@ -1,5 +1,17 @@
 *** Settings ***
-Documentation       Keywords related to use DataBase library module.
+Documentation     Database keywords module for test automation
+...               
+...               This module contains keywords related to database operations.
+...               It provides functionality for:
+...               - Setting up database connections
+...               - Executing SQL queries
+...               - Working with SQL files
+...               
+...               Dependencies:
+...               - DatabaseLibrary
+...               - Collections
+...               - OperatingSystem
+...               - String
 
 Library             DatabaseLibrary
 Library             Collections
@@ -14,10 +26,22 @@ ${LOCAL_SQL_FOLDER}=    ${EXECDIR}/resources/sql/
 
 *** Keywords ***
 Set Database data
-    [Documentation]    Identifies which database we want to access to perform the tests
-    ...    Return the database access data.
-    ...    Normally this keyword is used within 'Define test data by campaign'
-    ...    = Examples =
+    [Documentation]    Configures database connection parameters for test execution.
+    ...    Sets up the database access data as a global variable.
+    ...    Typically used within 'Define test data by campaign'.
+    ...
+    ...    Arguments:
+    ...    - db_name: Database name
+    ...    - db_user: Database username
+    ...    - db_password: Database password
+    ...    - db_host: Database host
+    ...    - db_port: Database port
+    ...    - db_module: Database API module name
+    ...
+    ...    Returns:
+    ...    - Sets the global variable ${DATABASE} with connection parameters
+    ...
+    ...    Example:
     ...    | Set Database data    |    ${db_name}    |    ${db_user}    |    ${db_password}    |    ${db_host}    |    ${db_port}    |    ${db_module}    |
     [Arguments]    ${db_name}    ${db_user}    ${db_password}    ${db_host}    ${db_port}   ${db_module}
     ${database_data}=    Create Dictionary
@@ -31,12 +55,21 @@ Set Database data
     Set Global Variable    ${DATABASE}    ${database_data}
 
 Connect to application database
-    [Documentation]    This keyword perform a database connection base on environment variables.
-    ...    For set environment variables we need use "Set Environment Variables" of ${EXECDIR}/resources/libraries/DotEnv.py Lib before use "Connect to database"
+    [Documentation]    Establishes a database connection based on environment variables.
+    ...    For setting environment variables, use "Set Environment Variables" from 
+    ...    ${EXECDIR}/resources/libraries/DotEnv.py library before using this keyword.
     ...
-    ...    = Examples =
-    ...    |    Connect to database    |
-    ...    = Return =
+    ...    Arguments:
+    ...    - env: Environment to connect to (default: value of global variable ${ENVIRONMENT})
+    ...
+    ...    Behavior:
+    ...    - Uses environment variables to set up database connection parameters
+    ...    - Connects to the database using DatabaseLibrary
+    ...
+    ...    Example:
+    ...    |    Connect to application database    |
+    ...
+    ...    Returns:
     ...    |    Returns the connection based on the global variable ${ENVIRONMENT}
     ...
     ...    As the environment is changed using the ${ENVIRONMENT} variable, the Database connects to the new environment
@@ -58,10 +91,17 @@ Connect to application database
     ...    db_port=${DATABASE}[DB_PORT]
 
 Perform a database query
-    [Documentation]    Receive a SQL query (String) and execute in connected database.
-    ...    This keyword perform a return validation. When nothing was returned this keyword execute Skip in test
+    [Documentation]    Executes a SQL query on the connected database.
+    ...    Performs a return validation. When nothing is returned, this keyword executes Skip in test.
     ...
-    ...    = Examples =
+    ...    Arguments:
+    ...    - query: SQL query to execute
+    ...    - asDict: Flag to return results as dictionary (default: ${True})
+    ...
+    ...    Returns:
+    ...    - Query results
+    ...
+    ...    Example:
     ...    |    ${response_query}    |    Perform a database query    |    SELECT * FROM Table    |
     [Arguments]    ${query}    ${asDict}=${True}
 
@@ -70,18 +110,20 @@ Perform a database query
     RETURN    ${response_query}
 
 Return the contents of the sql local query file and perform the query in the database
-    [Documentation]    This keyword aims to execute a query obtained from a local file.
-    ...    We salve sql scripts in resources/sql/${ENVIRONMENT}
+    [Documentation]    Executes a SQL query from a local file.
+    ...    SQL scripts are stored in resources/sql/${ENVIRONMENT}
     ...
-    ...    = Arguments =
-    ...    - folder_path -> Path to the folder where the file containing the query is located.
-    ...    - sql_file_name -> Name of the file containing the query to be executed.
-    ...    - replace_strings -> Strings for replace in file content if it's necessary. For default replace $$ for the list values
+    ...    Arguments:
+    ...    - sql_file_name: Name of the file containing the query to be executed
+    ...    - replace_strings: Strings to replace in file content if necessary (default: replace $$ with the list values)
+    ...    - asDict: Flag to return results as dictionary (default: True)
     ...
-    ...    = Examples =
-    ...    Read a local query and execute
-    ...    |    ${result}=    |    Return the contents of the sql local query file and perform the query in the database    |    folder    |    file.sql    |    A    B    C    |
+    ...    Returns:
+    ...    - Query results
     ...
+    ...    Example:
+    ...    Read a local query and execute:
+    ...    |    ${result}=    |    Return the contents of the sql local query file and perform the query in the database    |    file.sql    |    A    B    C    |
     [Arguments]    ${sql_file_name}    @{replace_strings}    ${asDict}=True
 
     ${template}=    Get File    ${LOCAL_SQL_FOLDER}/${sql_file_name}

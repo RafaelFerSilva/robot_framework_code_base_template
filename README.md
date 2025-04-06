@@ -125,14 +125,70 @@ Suite Setup    Run Keywords
 Suite Teardown    Disconnect From Database
 ```
 
-### Database Configuration
+Here's an updated section for your README.md that explains the documentation generation feature:
+
+## 📚 Documentation Generation
+
+### Automatic Documentation
+
+The project includes a script to automatically generate HTML documentation for all keyword files, resource files, and Python libraries in the `resources` directory.
+
+### Usage
+
+Run the documentation generator script from the project root:
+
+```bash
+python generate_docs.py
+```
+
+This script will:
+- Scan all `.resource`, `.robot`, and `.py` files in the `resources` directory
+- Generate HTML documentation using Robot Framework's libdoc tool
+- Create a documentation directory with the same structure as the resources directory
+- Generate an index.html file with links to all documentation files
+
+### Output
+
+The documentation is saved in the `documentation` directory at the project root. The structure mirrors the `resources` directory structure, making it easy to navigate.
+
+### Index Page
+
+The index.html file provides:
+- A complete listing of all documented files
+- Organized sections for libraries, keywords, and other resources
+- File type indicators (Resource, Robot, Python Library)
+- Direct links to each documentation file
+
+### Customization
+
+You can customize the documentation generation by modifying the `generate_docs.py` script:
+
+- Add files to the `EXCLUDED_FILES` list to skip documentation generation for specific files
+- Modify the HTML styling in the `create_index_file` function
+- Change the output directory by modifying the `doc_dir` variable
+
+### Example
+
+After running the script, open `documentation/index.html` in your browser to view the complete documentation for your project:
+
+![Documentation Example](images/documentation_example.png)
+
+The documentation provides detailed information about:
+- Keywords and their arguments
+- Python library methods
+- Resource file variables
+- Usage examples
+- Return values
+
+
+# Database Configuration
 Uses Docker Compose for test database:
 ```bash
 # Start database container
 docker-compose up -d
 ```
 
-## 🧪 Running Tests
+# 🧪 Running Tests
 
 ### Local Execution
 ```bash
@@ -141,6 +197,9 @@ robot -d ./reports --output output.xml ./tests
 
 # Verbose mode
 robot -d ./reports --output output.xml -L TRACE ./tests
+
+# Parallel execution
+pabot --processes 4 -d ./reports --output output.xml --testlevelsplit ./tests 
 ```
 
 ## 📊 Test Coverage and Reporting
