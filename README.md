@@ -180,6 +180,8 @@ The documentation provides detailed information about:
 - Usage examples
 - Return values
 
+Project documentation example: [robot_framework_code_base_template](https://rafaelfersilva.github.io/robot_framework_code_base_template/)
+
 
 # Database Configuration
 Uses Docker Compose for test database:
