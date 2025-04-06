@@ -3,10 +3,9 @@ import numpy as np
 import requests
 from io import BytesIO
 from skimage.metrics import structural_similarity as ssim
-from robot.api.deco import not_keyword, keyword, library
+from robot.api.deco import not_keyword, keyword
 
 
-@library(scope='Test', auto_keywords=True)
 class CompareTwoImages:
     """Library to compare two images, local or using web URL.
 
@@ -24,11 +23,11 @@ class CompareTwoImages:
     = Usage =
 
     Compare Images
-    ...    ${EXECDIR}/resources/files/images/logo_orbia.png
-    ...    ${EXECDIR}/resources/files/images/logo_orbia.png
+    ...    ${EXECDIR}/resources/files/images/logo_imagem.png
+    ...    ${EXECDIR}/resources/files/images/logo_imagem.png
 
     Compare Images
-    ...    ${EXECDIR}/resources/files/images/logo_orbia.png
+    ...    ${EXECDIR}/resources/files/images/logo_imagem.png
     ...    www.image.com.br/imagem.png
     """
 
