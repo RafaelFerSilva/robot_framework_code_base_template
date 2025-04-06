@@ -16,26 +16,32 @@ brazil_tz = pytz.timezone('America/Sao_Paulo')
 def generate_markdown_report(result, min_coverage):
     """
     Generates a test coverage report in Markdown format.
-    
+
+    This function analyzes the test execution results and creates a detailed
+    Markdown report showing coverage statistics and suite breakdown.
+
     Args:
-        result (ExecutionResult): Test execution result
-        min_coverage (float): Minimum coverage percentage
-    
+        result (ExecutionResult): Robot Framework test execution result object
+        min_coverage (float): Minimum required coverage percentage
+
     Returns:
-        str: Report in Markdown format
+        str: Report in Markdown format with coverage statistics and suite details
+
+    Example:
+        | ${report}= | Generate Markdown Report | ${result} | 80.0 |
     """
     # Calculate statistics
     total_tests = result.statistics.total.total
     passed_tests = result.statistics.total.passed
     failed_tests = result.statistics.total.failed
     skipped_tests = result.statistics.total.skipped
-    
+
     # Calculate percentage of passed tests
     pass_percentage = (passed_tests / total_tests) * 100
-    
+
     # Determine coverage status
     coverage_status = "Passed ✅" if pass_percentage >= min_coverage else "Failed ❌"
-    
+
     # Create Markdown report
     markdown_report = f"""## Test Coverage Report
 
@@ -66,68 +72,81 @@ def generate_markdown_report(result, min_coverage):
 
     # Add footer with Brazil timezone
     markdown_report += f"\n*Generated on: {datetime.now(brazil_tz).strftime('%Y-%m-%d %H:%M:%S')}*"
-    
+
     return markdown_report
 
 def save_markdown_report(report, output_dir):
     """
     Saves the Markdown report to a file.
-    
+
+    This function creates the output directory if it doesn't exist and
+    saves the Markdown report with a timestamped filename.
+
     Args:
         report (str): Markdown report content
         output_dir (str): Directory to save the report
-    
+
     Returns:
         str: Full path of the generated file
+
+    Example:
+        | ${filepath}= | Save Markdown Report | ${report} | test_reports |
     """
     # Create directory if it doesn't exist
     os.makedirs(output_dir, exist_ok=True)
-    
+
     # Generate filename using Brazil timezone
     filename = f"test_coverage_report_{datetime.now(brazil_tz).strftime('%Y%m%d_%H%M%S')}.md"
     filepath = os.path.join(output_dir, filename)
-    
+
     # Save file with UTF-8 encoding
     with open(filepath, 'w', encoding='utf-8') as f:
         f.write(report)
-    
+
     print(f"Markdown report generated at: {filepath}")
-    
+
     return filepath
 
 def validate_test_coverage(
-    output_file, 
-    min_coverage=80, 
-    output_dir='test_reports', 
+    output_file,
+    min_coverage=80,
+    output_dir='test_reports',
     verbose=True
 ):
     """
-    Validates test coverage and generates Markdown report.
-    
+    Validates test coverage and generates a Markdown report.
+
+    This function analyzes the Robot Framework output.xml file, calculates
+    test coverage, generates a report, and validates if the coverage meets
+    the minimum requirement.
+
     Args:
-        output_file (str): Path to output.xml file
-        min_coverage (float, optional): Minimum coverage percentage. Defaults to 80.
+        output_file (str): Path to Robot Framework output.xml file
+        min_coverage (float, optional): Minimum required coverage percentage. Defaults to 80.
         output_dir (str, optional): Directory to save reports. Defaults to 'test_reports'.
         verbose (bool, optional): Enables detailed logging. Defaults to True.
-    
+
     Raises:
         AssertionError: If test coverage is below the specified minimum.
+
+    Example:
+        | Validate Test Coverage | output.xml | min_coverage=85 | output_dir=reports |
     """
     try:
         # Load test execution result
         result = ExecutionResult(output_file)
-        
+
         # Calculate percentage of passed tests
         total_tests = result.statistics.total.total
         passed_tests = result.statistics.total.passed
         pass_percentage = (passed_tests / total_tests) * 100
-        
+
         # Generate Markdown report
         markdown_report = generate_markdown_report(result, min_coverage)
-        
+
         # Save Markdown report
         save_markdown_report(markdown_report, output_dir)
-        
+
         # Validate minimum coverage
         if pass_percentage < min_coverage:
             print("Test Coverage Failed")
@@ -135,10 +154,10 @@ def validate_test_coverage(
                 f"Test coverage of {pass_percentage:.2f}% "
                 f"is below the required minimum of {min_coverage}%"
             )
-        
+
         print(f"Test coverage passed: {pass_percentage:.2f}%")
         sys.exit(0)
-    
+
     except Exception as e:
         print(f"Error in coverage validation: {e}")
         sys.exit(1)
@@ -146,24 +165,35 @@ def validate_test_coverage(
 def main():
     """
     Main function for command-line execution.
-    Allows passing custom arguments.
+
+    This function parses command-line arguments and calls the validate_test_coverage
+    function with the provided parameters.
+
+    Command-line arguments:
+        output_file: Path to output.xml file
+        --min-coverage: Minimum coverage percentage (default: 80)
+        --output-dir: Directory to save reports (default: 'test_reports')
+        --quiet: Disable detailed logging
+
+    Example usage:
+        python test_coverage_validator.py output.xml --min-coverage 85 --output-dir reports
     """
     import argparse
-    
+
     parser = argparse.ArgumentParser(description='Test Coverage Validator')
     parser.add_argument('output_file', help='Path to output.xml file')
-    parser.add_argument('--min-coverage', type=float, default=80, 
+    parser.add_argument('--min-coverage', type=float, default=80,
                         help='Minimum coverage percentage (default: 80)')
-    parser.add_argument('--output-dir', default='test_reports', 
+    parser.add_argument('--output-dir', default='test_reports',
                         help='Directory to save reports')
-    parser.add_argument('--quiet', action='store_true', 
+    parser.add_argument('--quiet', action='store_true',
                         help='Disable detailed logging')
-    
+
     args = parser.parse_args()
-    
+
     validate_test_coverage(
-        args.output_file, 
-        min_coverage=args.min_coverage, 
+        args.output_file,
+        min_coverage=args.min_coverage,
         output_dir=args.output_dir,
         verbose=not args.quiet
     )
