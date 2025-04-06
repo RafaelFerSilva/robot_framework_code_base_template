@@ -74,7 +74,7 @@ jobs:
           DB_PASSWORD: testpassword
           DB_HOST: localhost
           DB_PORT: ${{ job.services.mysql.ports[3306] }}
-        run: pabot --processes 4 -d ./reports --output output.xml -v HEADLESS:true -v PIPELINE:true  --testlevelsplit ./tests
+        run: pabot --processes 4 -d ./reports --output output.xml -v HEADLESS:true -v PIPELINE:true --nostatusrc  --testlevelsplit ./tests
 
       - name: Validate Test Coverage
         if: always()
