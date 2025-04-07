@@ -1,16 +1,17 @@
 *** Settings ***
-Documentation    Tests for validate common keywords
+Documentation       Tests for validate common keywords
 
-Library    Collections
-Resource    ${EXECDIR}/resources/keywords/Common.keywords.resource
-Test Tags    common
+Library             Collections
+Resource            ${EXECDIR}/resources/keywords/Common.keywords.resource
+
+Test Tags           common
+
 
 *** Test Cases ***
-
 Should Be Possible Read Language Json File based in page item id
     Set language    page_pt
     Log Many    ${LANGUAGE}[home][pageTitle]
-    Dictionary Should Contain Key    ${LANGUAGE}[home]   pageTitle
+    Dictionary Should Contain Key    ${LANGUAGE}[home]    pageTitle
 
 Should Be Possible Read Language Json File based string values
     Set language    pt

@@ -1,7 +1,8 @@
 *** Settings ***
-Resource     ${EXECDIR}/resources/keywords/Data.keywords.resource
+Resource        ${EXECDIR}/resources/keywords/Data.keywords.resource
 
-Test Tags    data
+Test Tags       data
+
 
 *** Test Cases ***
 Should be possible Return a DDD from Brazil
@@ -19,4 +20,3 @@ Should be possible Return a Brazilian landline number
 Should be possible Return a date with pt-BR format
     ${date}=    Return a date with pt-BR format
     Log    ${date}
-
