@@ -131,7 +131,7 @@ Here's an updated section for your README.md that explains the documentation gen
 
 ### Automatic Documentation
 
-The project includes a script to automatically generate HTML documentation for all keyword files, resource files, and Python libraries in the `resources` directory.
+The project includes a script to automatically generate HTML documentation for all suite files on `/tests` directory, keyword files, resource files, and Python libraries in the `resources` directory.
 
 ### Usage
 
@@ -143,7 +143,8 @@ python generate_docs.py
 
 This script will:
 - Scan all `.resource`, `.robot`, and `.py` files in the `resources` directory
-- Generate HTML documentation using Robot Framework's libdoc tool
+- Scan all `.resource`, `.robot`, and `.py` files in the `tests` directory
+- Generate HTML documentation using Robot Framework's libdoc/testdoc tools
 - Create a documentation directory with the same structure as the resources directory
 - Generate an index.html file with links to all documentation files
 
@@ -155,7 +156,7 @@ The documentation is saved in the `documentation` directory at the project root.
 
 The index.html file provides:
 - A complete listing of all documented files
-- Organized sections for libraries, keywords, and other resources
+- Organized sections for tests, libraries, keywords, and other resources
 - File type indicators (Resource, Robot, Python Library)
 - Direct links to each documentation file
 
