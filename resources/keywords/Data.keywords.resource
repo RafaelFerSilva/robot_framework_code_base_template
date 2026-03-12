@@ -12,7 +12,6 @@ Documentation     Data keywords module for test automation
 Library        DateTime
 Library        FakerLibrary     locale=pt_BR
 Library        JSONLibrary
-Resource       ./Common.keywords.resource
 
 *** Variables ***
 &{MESES}=           1=Janeiro

@@ -13,11 +13,13 @@ Documentation     Database keywords module for test automation
 ...               - OperatingSystem
 ...               - String
 
-Library             DatabaseLibrary
 Library             Collections
 Library             OperatingSystem
 Library             String
-Resource            ./Common.keywords.resource
+Library             DatabaseLibrary
+
+Library             ${EXECDIR}/resources/libraries/DotEnv.py
+Resource            ${EXECDIR}/resources/keywords/Strings.keywords.resource
 
 
 *** Variables ***
@@ -25,7 +27,7 @@ ${LOCAL_SQL_FOLDER}=    ${EXECDIR}/resources/sql/
 
 
 *** Keywords ***
-Set Database data
+Set Database Data
     [Documentation]    Configures database connection parameters for test execution.
     ...    Sets up the database access data as a global variable.
     ...    Typically used within 'Define test data by campaign'.

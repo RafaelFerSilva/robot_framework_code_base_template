@@ -2,7 +2,9 @@
 Documentation       Tests for validate common keywords
 
 Library             Collections
-Resource            ${EXECDIR}/resources/keywords/Common.keywords.resource
+Resource            ${EXECDIR}/resources/keywords/Environment.keywords.resource
+Resource            ${EXECDIR}/resources/keywords/Strings.keywords.resource
+Resource            ${EXECDIR}/resources/keywords/FileSystem.keywords.resource
 
 Test Tags           common
 

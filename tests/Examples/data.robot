@@ -1,5 +1,8 @@
 *** Settings ***
 Resource        ${EXECDIR}/resources/keywords/Data.keywords.resource
+Resource        ${EXECDIR}/resources/keywords/FileSystem.keywords.resource
+Resource        ${EXECDIR}/resources/keywords/Strings.keywords.resource
+Library         FakerLibrary
 
 Test Tags       data
 

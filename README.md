@@ -35,7 +35,7 @@ source venv/bin/activate
 
 ### 3. Install Dependencies
 ```bash
-python make_install.py
+python tools/make_install.py
 ```
 
 This script will:
@@ -138,7 +138,7 @@ The project includes a script to automatically generate HTML documentation for a
 Run the documentation generator script from the project root:
 
 ```bash
-python generate_docs.py
+python tools/generate_docs.py
 ```
 
 This script will:
@@ -162,7 +162,7 @@ The index.html file provides:
 
 ### Customization
 
-You can customize the documentation generation by modifying the `generate_docs.py` script:
+You can customize the documentation generation by modifying the `tools/generate_docs.py` script:
 
 - Add files to the `EXCLUDED_FILES` list to skip documentation generation for specific files
 - Modify the HTML styling in the `create_index_file` function
@@ -251,14 +251,11 @@ We create a step on pipeline_push.html to register metrics reports on githubpage
 
 ## 🐛 Known Issues & Workarounds
 
-### `ModuleNotFoundError: No module named 'pkg_resources'`
-If you encounter this error while running tests or installing dependencies, it is because newer versions of `setuptools` (starting from `82.0.0`) have completely removed the `pkg_resources` module, which is still required by some legacy Robot Framework libraries.
-
-To resolve this issue, downgrade `setuptools` to a version lower than `82.0.0`:
+### `robotframework-robocop` Linter
+To enforce code quality, this template includes `robocop`. You can run it manually:
 ```bash
-pip install "setuptools<82.0.0"
+robocop tests/ resources/
 ```
-*Note: This constraint (`setuptools<82.0.0`) has already been added to the `requirements.txt` to prevent this issue in new installations.*
 
 ## ⚠️ Important Notes
 - Use secrets for environment variables in pipelines

@@ -1,5 +1,6 @@
 *** Settings ***
-Resource    ${EXECDIR}/resources/keywords/Common.keywords.resource
+Resource    ${EXECDIR}/resources/keywords/Environment.keywords.resource
+Resource    ${EXECDIR}/resources/keywords/BrowserContext.keywords.resource
 Resource    ${EXECDIR}/resources/keywords/DataBase.keywords.resource
 
 
