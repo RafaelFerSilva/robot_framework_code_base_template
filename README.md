@@ -249,6 +249,17 @@ We create a step on pipeline_push.html to register metrics reports on githubpage
 
 ![Robot Metrics Report](images/image-1.png)
 
+## 🐛 Known Issues & Workarounds
+
+### `ModuleNotFoundError: No module named 'pkg_resources'`
+If you encounter this error while running tests or installing dependencies, it is because newer versions of `setuptools` (starting from `82.0.0`) have completely removed the `pkg_resources` module, which is still required by some legacy Robot Framework libraries.
+
+To resolve this issue, downgrade `setuptools` to a version lower than `82.0.0`:
+```bash
+pip install "setuptools<82.0.0"
+```
+*Note: This constraint (`setuptools<82.0.0`) has already been added to the `requirements.txt` to prevent this issue in new installations.*
+
 ## ⚠️ Important Notes
 - Use secrets for environment variables in pipelines
 - Customize database and configuration for your specific project needs
