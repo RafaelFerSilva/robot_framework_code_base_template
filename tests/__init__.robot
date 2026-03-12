@@ -3,11 +3,12 @@ Documentation       The __init__.robot file is executed before any test suite or
 
 Library             DatabaseLibrary
 Library             ${EXECDIR}/resources/libraries/DotEnv.py
-Resource            ${EXECDIR}/resources/keywords/DataBase.keywords.resource
+Resource            ${EXECDIR}/resources/keywords/core/DataBase.keywords.resource
 
-Suite Setup         Run Keywords
-...                     Set Environment Project Variables
-...                     pipeline=${PIPELINE}
-...                     environment=${ENVIRONMENT}    AND
-...                     Connect to application database
+Suite Setup         Initialize Application Environment
 Suite Teardown      Disconnect From Database
+
+*** Keywords ***
+Initialize Application Environment
+    Set Environment Project Variables    pipeline=${PIPELINE}    environment=${ENVIRONMENT}
+    Connect to application database

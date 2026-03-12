@@ -1,9 +1,12 @@
 *** Settings ***
-Resource        ${EXECDIR}/resources/keywords/Book_Store/bookStore.keywords.resource
+Resource        ${EXECDIR}/resources/keywords/app/Book_Store/bookStore.keywords.resource
 
 Suite Setup     Run Keywords    Create Session    ${SESSION}    ${DEMOQA_URL}    disable_warnings=${DISABLED_WORNINGS}    AND
 ...                 Create Book_Store API Headers
 
+
+*** Variables ***
+${BODY}=        ${EMPTY}
 
 *** Test Cases ***
 Should be possible create a user

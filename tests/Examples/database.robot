@@ -1,6 +1,6 @@
 *** Settings ***
 Library         DatabaseLibrary
-Resource        ${EXECDIR}/resources/keywords/DataBase.keywords.resource
+Resource        ${EXECDIR}/resources/keywords/core/DataBase.keywords.resource
 
 Test Tags       database
 

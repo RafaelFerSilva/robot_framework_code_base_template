@@ -1,4 +1,4 @@
-DB_API_MODULE_NAME="pymysql"
+DB_API_MODULE_NAME = "pymysql"
 BROWSER_TIMEOUT = "40"
 BROWSER = "chromium"
 HEADLESS = False
@@ -15,6 +15,7 @@ URLS = {
 
 
 LANG = "pt"
+LANGUAGE = {}
 
 MOBILE = False
 DEVICE_NAME = "Nexus 5"

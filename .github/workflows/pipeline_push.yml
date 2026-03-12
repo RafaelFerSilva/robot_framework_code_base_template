@@ -49,7 +49,7 @@ jobs:
           pip install mysql-connector-python
 
       - name: Wait for MySQL and Initialize Database
-        run: python init_db.py
+        run: python tools/init_db.py
       
       - name: Create reports folder
         run: |
@@ -69,7 +69,7 @@ jobs:
           # For real testing environments these variables must be secret and not exposed.
           DB_NAME: testdb
           DB_USER: testuser
-          DB_PASSWORD: testpassword
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           DB_HOST: localhost
           DB_PORT: ${{ job.services.mysql.ports[3306] }}
         run: pabot --processes 4 -d ./reports --output output.xml -v HEADLESS:true -v PIPELINE:true --nostatusrc  --testlevelsplit ./tests
@@ -80,7 +80,7 @@ jobs:
       
       - name: Generate Documentation
         if: always()
-        run: python generate_docs.py
+        run: python tools/generate_docs.py
 
       - name: Upload Test Results Artifacts
         if: always()
