@@ -3,8 +3,6 @@ Documentation     General Utilities module for the test automation framework
 ...               
 ...               This module contains generic actions like explicit justified waits.
 
-Library           BuiltIn
-
 
 *** Keywords ***
 Justified wait

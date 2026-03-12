@@ -2,9 +2,9 @@
 Documentation       Tests for validate common keywords
 
 Library             Collections
-Resource            ${EXECDIR}/resources/keywords/Environment.keywords.resource
-Resource            ${EXECDIR}/resources/keywords/Strings.keywords.resource
-Resource            ${EXECDIR}/resources/keywords/FileSystem.keywords.resource
+Resource            ${EXECDIR}/resources/keywords/core/Environment.keywords.resource
+Resource            ${EXECDIR}/resources/keywords/core/Strings.keywords.resource
+Resource            ${EXECDIR}/resources/keywords/core/FileSystem.keywords.resource
 
 Test Tags           common
 
@@ -20,7 +20,7 @@ Should Be Possible Read Language Json File based string values
     Log Many    ${LANGUAGE}[DEMOQA]
 
 Should be possible return a file path
-    ${file_path}=    Return the file path from the files folder    i18n    pt.json
+    ${file_path}=    Return The File Path From The Files Folder    i18n    pt.json
     Should Be Equal    ${file_path}    ${RESOURCES_FILES}/i18n/pt.json
 
 Should be possible return a file contents

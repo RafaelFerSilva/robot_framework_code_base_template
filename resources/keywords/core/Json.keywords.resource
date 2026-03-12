@@ -12,7 +12,7 @@ Documentation     JSON keywords module for test automation
 
 Library         JsonValidator
 Library         JSONLibrary
-Resource       ./Common.keywords.resource
+Resource        ${EXECDIR}/resources/keywords/core/FileSystem.keywords.resource
 
 *** Keywords ***
     
@@ -31,5 +31,5 @@ Validate API Json Schema From File
     ...    Example:
     ...    |    Validate API Json Schema From File    |    ${response}    |    users    |    user_schema.json    |
     [Arguments]     ${response_json}    ${folder}       ${schema_json}
-    ${file_path}=    Return the file path from the files folder      jsonSchema/${folder}       ${schema_json}
+    ${file_path}=    Return The File Path From The Files Folder      jsonSchema/${folder}       ${schema_json}
     Validate Jsonschema From File	  ${response_json}   ${file_path}

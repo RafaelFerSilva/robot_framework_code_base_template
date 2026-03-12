@@ -19,11 +19,13 @@ Library             String
 Library             DatabaseLibrary
 
 Library             ${EXECDIR}/resources/libraries/DotEnv.py
-Resource            ${EXECDIR}/resources/keywords/Strings.keywords.resource
+Resource            ${EXECDIR}/resources/keywords/core/Strings.keywords.resource
+Variables           ${EXECDIR}/resources/config_variables.py
 
 
 *** Variables ***
 ${LOCAL_SQL_FOLDER}=    ${EXECDIR}/resources/sql/
+${DATABASE}=            &{EMPTY}
 
 
 *** Keywords ***
@@ -76,12 +78,18 @@ Connect to application database
     ...
     ...    As the environment is changed using the ${ENVIRONMENT} variable, the Database connects to the new environment
     [Arguments]    ${env}=${ENVIRONMENT}
+    ${db_name}=        Get Environment Variable    DB_NAME        default=${EMPTY}
+    ${db_user}=        Get Environment Variable    DB_USER        default=${EMPTY}
+    ${db_password}=    Get Environment Variable    DB_PASSWORD    default=${EMPTY}
+    ${db_host}=        Get Environment Variable    DB_HOST        default=${EMPTY}
+    ${db_port}=        Get Environment Variable    DB_PORT        default=${EMPTY}
+
     Set Database data
-    ...    %{DB_NAME}
-    ...    %{DB_USER}
-    ...    %{DB_PASSWORD}
-    ...    %{DB_HOST}
-    ...    %{DB_PORT}
+    ...    ${db_name}
+    ...    ${db_user}
+    ...    ${db_password}
+    ...    ${db_host}
+    ...    ${db_port}
     ...    ${DB_API_MODULE_NAME}
 
     Connect To Database

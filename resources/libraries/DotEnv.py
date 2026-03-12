@@ -36,11 +36,11 @@ def set_environment_project_variables(pipeline: bool = False, environment: str =
         value = dotenv_values(f"{environment.lower()}.env")
 
     if (print_variables):
-        for name, value in value.items():
-            print("{0}: {1}".format(name, value))
+        for name, current_value in value.items():
+            print("{0}: {1}".format(name, current_value))
 
     if (value):
         return value
     else:
         raise Failure(
-            f"Please check environment key value ou file: key value {environment}")
+            f"Please check environment file: {environment.lower()}.env (Received: environment='{environment}', pipeline={pipeline})")

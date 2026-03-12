@@ -1,5 +1,3 @@
-Here's the corrected XML.keywords.resource file with documentation in English:
-
 *** Settings ***
 Documentation     XML keywords module for test automation
 ...               

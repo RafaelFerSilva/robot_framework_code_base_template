@@ -1,23 +1,26 @@
 *** Settings ***
 Documentation     Browser Management module for the test automation framework
-...               
+...
 ...               This module manages the Browser Context, including:
 ...               - Desktop vs Mobile configurations
 ...               - Viewport, caching, and cookies context handling
 ...               - Opening browser instances using Playwright/Browser library
 
-Library             Browser
 Library             Collections
+Library             Browser
+
 Variables           ${EXECDIR}/resources/config_variables.py
 
 
 *** Variables ***
 ${RESOURCES}            ${EXECDIR}/resources
 ${RESOURCES_FILES}      ${RESOURCES}/files
+${LANGUAGE_DIC}=        ${EMPTY}
+${URL}=                 ${EMPTY}
 
 
 *** Keywords ***
-Set Mobile device to context
+Set Mobile Device To Context
     [Documentation]    Configures the browser context for a specific mobile device.
     ...
     ...    Uses the global variable ${DEVICE_NAME} to get the device settings
@@ -33,12 +36,12 @@ Config New Context
     ...    If ${MOBILE} is true, configures a context for mobile device.
     ...    Otherwise, configures a default context using ${NEW_CONTEXT}.
     IF    ${MOBILE}
-        Set Mobile device to context
+        Set Mobile Device To Context
     ELSE
         New Context    &{NEW_CONTEXT}
     END
 
-Receive a list of cookies and add to context
+Receive A List Of Cookies And Add To Context
     [Documentation]    Adds a list of cookies to the current browser context.
     ...
     ...    Arguments:
@@ -46,6 +49,7 @@ Receive a list of cookies and add to context
     [Arguments]    ${cookies}=[]
 
     IF    ${cookies}!=None
+        
         IF    ${cookies}!=[]
             FOR    ${cookie}    IN    @{cookies}
                 Add Cookie    &{cookie}
@@ -53,7 +57,19 @@ Receive a list of cookies and add to context
         END
     END
 
-Open the browser with config
+Browser Log Info
+    [Documentation]    Logs the current configuration of the browser context.
+    [Arguments]    ${LOG_CONFIG}=${False}
+
+    IF    ${LOG_CONFIG}
+        Log To Console    \nSelected language: ${LANG}
+        Log To Console    \nSelected language dictionary: ${RESOURCES_FILES}/i18n/${LANGUAGE_DIC}[${LANG}].json
+        Log To Console    \nSelected ENVIRONMENT: ${ENVIRONMENT}
+        Log To Console    \nSelected URL: ${URL}
+        Log To Console    \nMobile: ${MOBILE}
+    END
+
+Open The Browser With Config
     [Documentation]    Opens the browser with settings defined in the NEW_CONTEXT object (config_variables.py).
     ...
     ...    Arguments:
@@ -76,15 +92,8 @@ Open the browser with config
 
     New Browser    browser=${BROWSER}    headless=${HEADLESS}
     Config New Context
-    Receive a list of cookies and add to context    ${COOKIES}
+    Receive A List Of Cookies And Add To Context    ${COOKIES}
     New Page    ${URL}
 
     Set Browser Timeout    ${old_timeout}
-
-    IF    ${LOG_CONFIG}
-        Log To Console    \nSelected language: ${LANG}
-        Log To Console    \nSelected language dictionary: ${RESOURCES_FILES}/i18n/${LANGUAGE_DIC}[${LANG}].json
-        Log To Console    \nSelected ENVIRONMENT: ${ENVIRONMENT}
-        Log To Console    \nSelected URL: ${URL}
-        Log To Console    \nMobile: ${MOBILE}
-    END
+    Browser Log Info    ${LOG_CONFIG}

@@ -14,23 +14,17 @@ Documentation       Book Store API keywords module for test automation
 ...                 - FakerLibrary
 ...                 - String
 
-Library             RequestsLibrary
 Library             JSONLibrary
 Library             JsonValidator
 Library             FakerLibrary
 Library             String
 
+Resource            bookStore.pages.resource
+
 
 *** Variables ***
-${SESSION}=                 Book_Store
-${DISABLED_WORNINGS}=       1
-${DEMOQA_URL}=              https://demoqa.com
-${CREATE_ACCOUNT}=          ${DEMOQA_URL}/Account/v1/User
-${GENERATE_TOKEN}=          ${DEMOQA_URL}/Account/v1/GenerateToken
-${USER_AUTORIZED}=          ${DEMOQA_URL}/Account/v1/Authorized
-${DELETE_USER}=             ${DEMOQA_URL}/Account/v1/User/$$
-${LIST_BOOKS}=              ${DEMOQA_URL}/BookStore/v1/Books
-${LIS_BOOKS_ISBN}=          ${DEMOQA_URL}/BookStore/v1/Book?ISBN=$$
+${BODY}=                    ${EMPTY}
+${HEADERS}=                 &{EMPTY}
 
 &{BOOK_DATABASE_DATA}=
 ...                         isbn=9781449365035
@@ -70,46 +64,6 @@ Create Book_Store API Headers
     ...    Content-Type=application/json
     Set Suite Variable    ${HEADERS}    ${headers}
 
-Perform a Post on the API
-    [Documentation]    Performs a POST request to the specified API endpoint.
-    ...
-    ...    Arguments:
-    ...    - session: Session name to use for the request
-    ...    - resource: API resource/endpoint
-    ...    - body: Request body (JSON)
-    ...    - headers: Request headers (default: ${EMPTY})
-    ...    - expected_status: Expected HTTP status code (default: 200)
-    ...
-    ...    Returns:
-    ...    - API response object
-    [Arguments]    ${session}    ${resource}    ${body}    ${headers}=${EMPTY}    ${expected_status}=200
-    ${response}=    POST On Session
-    ...    ${session}
-    ...    ${resource}
-    ...    json=${body}
-    ...    headers=${headers}
-    ...    expected_status=${expected_status}
-    RETURN    ${response}
-
-Perform a Delete on the API
-    [Documentation]    Performs a DELETE request to the specified API endpoint.
-    ...
-    ...    Arguments:
-    ...    - session: Session name to use for the request
-    ...    - resource: API resource/endpoint
-    ...    - headers: Request headers (default: ${EMPTY})
-    ...    - expected_status: Expected HTTP status code (default: 200)
-    ...
-    ...    Returns:
-    ...    - API response object
-    [Arguments]    ${session}    ${resource}    ${headers}=${EMPTY}    ${expected_status}=200
-    ${response}=    DELETE On Session
-    ...    ${session}
-    ...    ${resource}
-    ...    headers=${headers}
-    ...    expected_status=${expected_status}
-    RETURN    ${response}
-
 Create User Account
     [Documentation]    Creates a new user account in the Book Store API.
     ...
@@ -119,7 +73,7 @@ Create User Account
     ...
     ...    Returns:
     ...    - API response object
-    ${response}=    Perform a Post on the API    ${SESSION}    ${CREATE_ACCOUNT}    ${BODY}    ${HEADERS}    201
+    ${response}=    Perform a Post on the API    ${SESSION}    ${CREATE_ACCOUNT_EP}    ${BODY}    ${HEADERS}    201
     RETURN    ${response}
 
 Generate User Token
@@ -131,7 +85,7 @@ Generate User Token
     ...
     ...    Returns:
     ...    - API response object containing the token
-    ${response}=    Perform a Post on the API    ${SESSION}    ${GENERATE_TOKEN}    ${BODY}    ${HEADERS}    200
+    ${response}=    Perform a Post on the API    ${SESSION}    ${GENERATE_TOKEN_EP}    ${BODY}    ${HEADERS}    200
     RETURN    ${response}
 
 Return If User is Autorized
@@ -143,7 +97,7 @@ Return If User is Autorized
     ...
     ...    Returns:
     ...    - API response object indicating authorization status
-    ${response}=    Perform a Post on the API    ${SESSION}    ${USER_AUTORIZED}    ${BODY}    ${HEADERS}    200
+    ${response}=    Perform a Post on the API    ${SESSION}    ${USER_AUTORIZED_EP}    ${BODY}    ${HEADERS}    200
     RETURN    ${response}
 
 List all Books
@@ -155,7 +109,7 @@ List all Books
     ...
     ...    Returns:
     ...    - API response object containing the list of books
-    ${response}=    GET On Session    ${SESSION}    ${LIST_BOOKS}    ${HEADERS}    200
+    ${response}=    Get All Books From API    ${HEADERS}
     RETURN    ${response}
 
 List Book by ISBN
@@ -172,6 +126,5 @@ List Book by ISBN
     ...    Returns:
     ...    - API response object containing the book details
     [Arguments]    ${isbn}
-    ${book_resource}=    Replace String    ${LIS_BOOKS_ISBN}    $$    ${isbn}
-    ${response}=    GET On Session    ${SESSION}    ${book_resource}    ${HEADERS}    200
+    ${response}=    Get Book By ISBN From API    ${isbn}    ${HEADERS}
     RETURN    ${response}

@@ -330,8 +330,8 @@ def main():
     """
     global project_root
 
-    # Determine project root (assuming this script is in the project root)
-    project_root = Path(__file__).parent
+    # Determine project root (script is in tools/ directory)
+    project_root = Path(__file__).parent.parent
 
     # Get project name from the root directory name
     project_name = project_root.name.replace('_', ' ').title()

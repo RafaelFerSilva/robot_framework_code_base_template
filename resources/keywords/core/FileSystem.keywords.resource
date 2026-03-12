@@ -6,9 +6,8 @@ Documentation     File System handling module for the test automation framework
 ...               - Finding internal file paths
 ...               - Loading content with utf-8-sig encoding strictness
 
-Resource          ${EXECDIR}/resources/keywords/Strings.keywords.resource
+Resource          ${EXECDIR}/resources/keywords/core/Strings.keywords.resource
 
-Library           String
 Library           OperatingSystem
 Variables         ${EXECDIR}/resources/config_variables.py
 
@@ -19,7 +18,7 @@ ${RESOURCES_FILES}      ${RESOURCES}/files
 
 
 *** Keywords ***
-Return the file path from the files folder
+Return The File Path From The Files Folder
     [Documentation]    Returns a file path to be used in tests.
     ...    This keyword does not validate whether the file exists, it only creates a path based on the framework's file folder path.
     ...
@@ -31,11 +30,11 @@ Return the file path from the files folder
     ...    - Complete file path
     ...
     ...    Example:
-    ...    |    ${file_path}=    |    Return the file path from the files folder    |    i18n    |    language_pt.json    |
-    [Arguments]    ${folder}    ${file}
-    ${file}=    String Replace    ${RESOURCES_FILES}/$$/$$    $$    ${folder}    count=1
-    ${file}=    String Replace    ${file}    $$    ${file}    count=1
-    RETURN    ${file}
+    ...    |    ${file_path}=    |    Return The File Path From The Files Folder    |    i18n    |    language_pt.json    |
+    [Arguments]    ${folder}    ${file_name}
+    ${path}=    Replace String    ${RESOURCES_FILES}/$$/$$    $$    ${folder}    count=1
+    ${path}=    Replace String    ${path}    $$    ${file_name}    count=1
+    RETURN    ${path}
 
 Return the contents of a file for testing - utf-8
     [Documentation]    Returns the content of a file inside the resource files folder.
@@ -50,6 +49,6 @@ Return the contents of a file for testing - utf-8
     ...    Example:
     ...    |    ${content}=    |    Return the contents of a file for testing - utf-8    |    i18n    |    language_pt.json    |
     [Arguments]    ${folder}    ${file_name}
-    ${file_path}=    Return the file path from the files folder    ${folder}    ${file_name}
+    ${file_path}=    Return The File Path From The Files Folder    ${folder}    ${file_name}
     ${file}=    Get File    ${file_path}    encoding='utf-8-sig'    encoding_errors=strict
     RETURN    ${file}

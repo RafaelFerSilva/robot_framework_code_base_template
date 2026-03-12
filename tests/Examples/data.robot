@@ -1,19 +1,16 @@
 *** Settings ***
-Resource        ${EXECDIR}/resources/keywords/Data.keywords.resource
-Resource        ${EXECDIR}/resources/keywords/FileSystem.keywords.resource
-Resource        ${EXECDIR}/resources/keywords/Strings.keywords.resource
-Library         FakerLibrary
+Resource        ${EXECDIR}/resources/keywords/core/Data.keywords.resource
 
 Test Tags       data
 
 
 *** Test Cases ***
-Should be possible Return a DDD from Brazil
-    ${ddd}=    Return a DDD from Brazil
+Should be possible Return A DDD From Brazil
+    ${ddd}=    Return A DDD From Brazil
     Log    ${ddd}
 
-Should be possible Return a Brazilian cell phone number
-    ${cell}=    Return a Brazilian cell phone number
+Should be possible Return A Brazilian Cell Phone Number
+    ${cell}=    Return A Brazilian Cell Phone Number
     Log    ${cell}
 
 Should be possible Return a Brazilian landline number
