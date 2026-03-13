@@ -16,31 +16,21 @@ import os
 import platform
 import subprocess
 
-def install(package, requirements_file=None):
+def install():
     """
-    Install a Python package or dependencies from a requirements file.
+    Install project dependencies using uv sync.
 
-    This function uses pip to install either a single package or all packages
-    listed in a requirements file.
-
-    Args:
-        package (str): Name of the package to install (can be None if using requirements_file)
-        requirements_file (str, optional): Path to requirements.txt file
+    This function uses uv to synchronize the project's dependencies
+    as defined in pyproject.toml and uv.lock.
 
     Raises:
-        Exception: If installation fails
+        Exception: If synchronization fails
     """
     try:
-        if requirements_file:
-            print(f"Installing dependencies from: {requirements_file}")
-            command = f"pip install -r {requirements_file}"
-        else:
-            print(f"Installing package: {package}")
-            command = f"pip install {package}"
-
-        subprocess.run(command, shell=True, check=True)
+        print("Synchronizing dependencies with uv...")
+        subprocess.run("uv sync", shell=True, check=True)
     except subprocess.CalledProcessError as error:
-        raise Exception(f"Unable to install dependencies: {error}")
+        raise Exception(f"Unable to synchronize dependencies: {error}")
 
 def set_env_variable(key, value):
     """
@@ -95,8 +85,8 @@ def init_browser_library():
 
 
 if __name__ == "__main__":
-    # Install dependencies from requirements.txt
-    install(None, requirements_file="requirements.txt")
+    # Install dependencies from pyproject.toml using uv sync
+    install()
 
     # Apply special configuration for pipeline environments
     if is_pipeline_execution():

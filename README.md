@@ -27,7 +27,27 @@ This comprehensive test automation framework leverages Robot Framework to stream
 
 ### System Requirements
 - [Python™](https://www.python.org/downloads/) (3.10+)
+- [uv](https://github.com/astral-sh/uv) (Extremamente recomendado)
 - [Node.js®](https://nodejs.org/en/download/) (18+)
+
+## 📦 Gerenciamento de Pacotes com uv
+
+Este projeto utiliza o [uv](https://github.com/astral-sh/uv) para gerenciar dependências e ambientes virtuais. O **uv** é um substituto extremamente rápido para o `pip` e `pip-tools`, escrito em Rust.
+
+### Por que uv?
+- **Velocidade**: Até 100x mais rápido que o `pip`.
+- **Confiabilidade**: Gerencia o `pyproject.toml` e gera um arquivo `uv.lock` determinístico.
+- **Simplicidade**: Gerencia versões do Python, ambientes virtuais e dependências em um único binário.
+- **Eficiência**: Utiliza *hard links* para evitar duplicidade de pacotes no disco.
+
+### Comandos Essenciais
+| Comando | Descrição |
+| :--- | :--- |
+| `uv sync` | Instala todas as dependências e cria o `.venv` automaticamente. |
+| `uv add <pacote>` | Adiciona uma nova biblioteca ao projeto. |
+| `uv remove <pacote>` | Remove uma biblioteca do projeto. |
+| `uv run <comando>` | Executa um comando (ex: `robot`) dentro do ambiente virtual. |
+| `uv lock` | Atualiza o arquivo `uv.lock` sem instalar nada. |
 
 ## 🛠 Setup and Installation
 
@@ -37,18 +57,20 @@ git clone https://github.com/RafaelFerSilva/robot_framework_code_base_template.g
 cd robot_framework_code_base_template
 ```
 
-### 2. Create Virtual Environment
+### 2. Setup Environment
 ```bash
-# Linux/MacOS
-python3 -m venv .venv
+# Sincroniza dependências e cria o virtualenv automaticamente
+uv sync
+
+# Ative o ambiente (opcional, mas recomendado para terminais)
 source .venv/bin/activate
 ```
 
-### 3. Install Dependencies
+### 3. Install Browsers
 ```bash
 python3 tools/make_install.py
 ```
-This script handles dependency installation and Playwright browser initialization.
+This script handles Playwright browser initialization and final environment checks.
 
 ## 🌐 Environment Configuration
 
@@ -108,7 +130,11 @@ Place generic keywords (browser helpers, date formatters, file handlers) in `res
 Place business logic and page-specific keywords in `resources/keywords/app/<App_Name>/`.
 
 ### 3. Imports
-Always use relative paths or `${EXECDIR}` to ensure compatibility:
+Always use relative paths or `${EXECDIR}` to ensure compatibility. You can run commands using `uv run` to ensure you are in the correct environment:
+```bash
+uv run robot -d ./reports tests/
+```
+
 ```robotframework
 Resource    ${EXECDIR}/resources/keywords/core/Environment.keywords.resource
 Resource    ${EXECDIR}/resources/keywords/app/Book_Store/bookStore.keywords.resource

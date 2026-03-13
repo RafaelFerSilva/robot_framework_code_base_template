@@ -1,0 +1,26 @@
+[project]
+name = "robot-framework-code-base-template"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "cryptography==46.0.5",
+    "mysql-connector-python==9.6.0",
+    "psycopg2-binary==2.9.11",
+    "pymssql==2.3.13",
+    "pymysql==1.1.2",
+    "pyodbc==5.3.0",
+    "python-dotenv==1.2.2",
+    "robotframework==7.4.2",
+    "robotframework-browser==19.12.5",
+    "robotframework-databaselibrary==2.4.1",
+    "robotframework-datadriver==1.11.2",
+    "robotframework-faker==6.0.0",
+    "robotframework-jsonlibrary==0.5",
+    "robotframework-jsonvalidator==2.0.0",
+    "robotframework-metrics==3.7.0",
+    "robotframework-pabot==5.2.2",
+    "robotframework-requests==0.9.7",
+    "robotframework-robocop==8.2.2",
+    "robotframework-tidy==4.18.0",
+    "scikit-image==0.26.0",
+]

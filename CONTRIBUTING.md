@@ -48,11 +48,11 @@ My Awesome Keyword
 
 ## 🛠 Workflow
 
-1.  **Dependencies**: Always update `requirements.txt` if you add a new library.
+1.  **Dependencies**: Always update `pyproject.toml` if you add a new library using `uv add <pacote>`.
 2.  **Linting**: Run `robocop` before submitting code. Address all `High` and `Medium` severity issues.
 3.  **Dry Run**: Ensure your changes don't break the suite structure:
     ```bash
-    ./.venv/bin/robot --dryrun tests/
+    uv run robot --dryrun tests/
     ```
 4.  **Pull Requests**:
     - Use descriptive titles.
