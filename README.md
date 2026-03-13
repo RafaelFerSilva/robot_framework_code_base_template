@@ -27,64 +27,64 @@ This comprehensive test automation framework leverages Robot Framework to stream
 
 ### System Requirements
 - [Python™](https://www.python.org/downloads/) (3.10+)
-- [uv](https://github.com/astral-sh/uv) (Extremamente recomendado)
+- [uv](https://github.com/astral-sh/uv) (Highly recommended)
 - [Node.js®](https://nodejs.org/en/download/) (18+)
 
-## 📦 Gerenciamento de Pacotes com uv
+## 📦 Package Management with uv
 
-Este projeto utiliza o [uv](https://github.com/astral-sh/uv) para gerenciar dependências e ambientes virtuais. O **uv** é um substituto extremamente rápido para o `pip` e `pip-tools`, escrito em Rust.
+This project uses [uv](https://github.com/astral-sh/uv) for managing dependencies and virtual environments. **uv** is an extremely fast substitute for `pip` and `pip-tools`, written in Rust.
 
-### Por que uv?
-- **Velocidade**: Até 100x mais rápido que o `pip`.
-- **Confiabilidade**: Gerencia o `pyproject.toml` e gera um arquivo `uv.lock` determinístico.
-- **Simplicidade**: Gerencia versões do Python, ambientes virtuais e dependências em um único binário.
-- **Eficiência**: Utiliza *hard links* para evitar duplicidade de pacotes no disco.
+### Why uv?
+- **Speed**: Up to 100x faster than `pip`.
+- **Reliability**: Manages `pyproject.toml` and generates a deterministic `uv.lock` file.
+- **Simplicity**: Manages Python versions, virtual environments, and dependencies in a single binary.
+- **Efficiency**: Uses *hard links* to avoid package duplication on disk.
 
-### Comandos Essenciais
-| Comando | Descrição |
+### Essential Commands
+| Command | Description |
 | :--- | :--- |
-| `uv sync` | Instala todas as dependências e cria o `.venv` automaticamente. |
-| `uv add <pacote>` | Adiciona uma nova biblioteca ao projeto. |
-| `uv remove <pacote>` | Remove uma biblioteca do projeto. |
-| `uv run <comando>` | Executa um comando (ex: `robot`) dentro do ambiente virtual. |
-| `uv lock` | Atualiza o arquivo `uv.lock` sem instalar nada. |
+| `uv sync` | Installs all dependencies and creates the `.venv` automatically. |
+| `uv add <package>` | Adds a new library to the project. |
+| `uv remove <package>` | Removes a library from the project. |
+| `uv run <command>` | Executes a command (e.g., `robot`) inside the virtual environment. |
+| `uv lock` | Updates the `uv.lock` file without installing anything. |
 
 ## 🤖 Robot Framework MCP (rf-mcp)
 
-O **RobotMCP** é um servidor MCP (Model Context Protocol) que permite que agentes de IA (como Claude ou Antigravity) interajam diretamente com este projeto, permitindo que a IA planeje, escreva e execute testes de forma autônoma.
+**RobotMCP** is an MCP (Model Context Protocol) server that allows AI agents (like Claude or Antigravity) to interact directly with this project, enabling the AI to plan, write, and execute tests autonomously.
 
-### Recursos Disponíveis
-- **Execução Passo a Passo**: A IA pode executar uma keyword por vez e analisar o resultado em tempo real.
-- **Descoberta de Keywords**: O agente mapeia automaticamente todas as keywords de negócio (`resources/`) e infraestrutura deste projeto.
-- **Memória Semântica**: O servidor utiliza um banco de dados local (`.robot_memory.db`) para aprender seletores e padrões de teste específicos deste repositório.
+### Available Features
+- **Step-by-Step Execution**: The AI can execute one keyword at a time and analyze the result in real-time.
+- **Keyword Discovery**: The agent automatically maps all business keywords (`resources/`) and infrastructure of this project.
+- **Semantic Memory**: The server uses a local database (`.robot_memory.db`) to learn specific selectors and test patterns of this repository.
 
-### Como Utilizar
-O servidor já está configurado globalmente no arquivo `mcp_config.json`. Ao interagir com a IA neste repositório:
-1. O agente detecta automaticamente o `ROBOT_PROJECT_ROOT` como esta pasta.
-2. Você pode pedir: *"Liste as keywords de negócio disponíveis"* ou *"Crie um teste para o fluxo X usando as keywords existentes"*.
-3. O agente usará as ferramentas do MCP para validar locadores e fluxos sem que você precise rodar os comandos manualmente.
+### How to Use
+The server is already globally configured in the `mcp_config.json` file. When interacting with the AI in this repository:
+1. The agent automatically detects the `ROBOT_PROJECT_ROOT` as this folder.
+2. You can ask: *"List the available business keywords"* or *"Create a test for flow X using existing keywords"*.
+3. The agent will use MCP tools to validate locators and flows without you needing to run commands manually.
 
-### 💡 Dica de Ouro: Prompt para IA
-Para que a IA siga rigorosamente a arquitetura de camadas e os padrões de escrita deste projeto, utilize um prompt baseado neste modelo:
+### 💡 Golden Tip: Prompt for AI
+To ensure the AI strictly follows the layered architecture and writing patterns of this project, use a prompt based on this model:
 
 ```markdown
-# Objetivo: Automatizar o fluxo [NOME DO FLUXO]
+# Goal: Automate the flow [FLOW NAME]
 
-## 1. Análise de Padrão (Arquitetura)
-Antes de iniciar, analise a pasta 'resources/keywords/app/Book_Store'.
-- Entenda como os seletores são organizados nos arquivos '.pages.resource'.
-- Observe como a lógica de negócio é encapsulada nos arquivos '.keywords.resource'.
-- Verifique como os testes consomem o 'Environment.keywords.resource'.
+## 1. Pattern Analysis (Architecture)
+Before starting, analyze the 'resources/keywords/app/Book_Store' folder.
+- Understand how selectors are organized in '.pages.resource' files.
+- Observe how business logic is encapsulated in '.keywords.resource' files.
+- Check how tests consume 'Environment.keywords.resource'.
 
-## 2. Implementação
-Aplique o mesmo padrão arquitetural:
-- Page Objects em 'resources/keywords/app/[Funcionalidade]/[nome].pages.resource'.
-- Business Keywords em 'resources/keywords/app/[Funcionalidade]/[nome].keywords.resource'.
-- Test Suite em 'tests/[nome].robot'.
+## 2. Implementation
+Apply the same architectural pattern:
+- Page Objects in 'resources/keywords/app/[Feature]/[name].pages.resource'.
+- Business Keywords in 'resources/keywords/app/[Feature]/[name].keywords.resource'.
+- Test Suite in 'tests/[name].robot'.
 
-## 3. Requisitos Técnicos
+## 3. Technical Requirements
 - Use Browser Library.
-- Execute de forma stepwise para validar locadores antes de finalizar.
+- Run stepwise to validate locators before finalizing.
 ```
 
 ## 🛠 Setup and Installation
@@ -97,10 +97,10 @@ cd robot_framework_code_base_template
 
 ### 2. Setup Environment
 ```bash
-# Sincroniza dependências e cria o virtualenv automaticamente
+# Syncs dependencies and creates the virtualenv automatically
 uv sync
 
-# Ative o ambiente (opcional, mas recomendado para terminais)
+# Activate the environment (optional, but recommended for terminals)
 source .venv/bin/activate
 ```
 
