@@ -49,6 +49,44 @@ Este projeto utiliza o [uv](https://github.com/astral-sh/uv) para gerenciar depe
 | `uv run <comando>` | Executa um comando (ex: `robot`) dentro do ambiente virtual. |
 | `uv lock` | Atualiza o arquivo `uv.lock` sem instalar nada. |
 
+## 🤖 Robot Framework MCP (rf-mcp)
+
+O **RobotMCP** é um servidor MCP (Model Context Protocol) que permite que agentes de IA (como Claude ou Antigravity) interajam diretamente com este projeto, permitindo que a IA planeje, escreva e execute testes de forma autônoma.
+
+### Recursos Disponíveis
+- **Execução Passo a Passo**: A IA pode executar uma keyword por vez e analisar o resultado em tempo real.
+- **Descoberta de Keywords**: O agente mapeia automaticamente todas as keywords de negócio (`resources/`) e infraestrutura deste projeto.
+- **Memória Semântica**: O servidor utiliza um banco de dados local (`.robot_memory.db`) para aprender seletores e padrões de teste específicos deste repositório.
+
+### Como Utilizar
+O servidor já está configurado globalmente no arquivo `mcp_config.json`. Ao interagir com a IA neste repositório:
+1. O agente detecta automaticamente o `ROBOT_PROJECT_ROOT` como esta pasta.
+2. Você pode pedir: *"Liste as keywords de negócio disponíveis"* ou *"Crie um teste para o fluxo X usando as keywords existentes"*.
+3. O agente usará as ferramentas do MCP para validar locadores e fluxos sem que você precise rodar os comandos manualmente.
+
+### 💡 Dica de Ouro: Prompt para IA
+Para que a IA siga rigorosamente a arquitetura de camadas e os padrões de escrita deste projeto, utilize um prompt baseado neste modelo:
+
+```markdown
+# Objetivo: Automatizar o fluxo [NOME DO FLUXO]
+
+## 1. Análise de Padrão (Arquitetura)
+Antes de iniciar, analise a pasta 'resources/keywords/app/Book_Store'.
+- Entenda como os seletores são organizados nos arquivos '.pages.resource'.
+- Observe como a lógica de negócio é encapsulada nos arquivos '.keywords.resource'.
+- Verifique como os testes consomem o 'Environment.keywords.resource'.
+
+## 2. Implementação
+Aplique o mesmo padrão arquitetural:
+- Page Objects em 'resources/keywords/app/[Funcionalidade]/[nome].pages.resource'.
+- Business Keywords em 'resources/keywords/app/[Funcionalidade]/[nome].keywords.resource'.
+- Test Suite em 'tests/[nome].robot'.
+
+## 3. Requisitos Técnicos
+- Use Browser Library.
+- Execute de forma stepwise para validar locadores antes de finalizar.
+```
+
 ## 🛠 Setup and Installation
 
 ### 1. Clone the Repository
