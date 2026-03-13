@@ -175,3 +175,4 @@ results/
 result/
 results
 /documentation/
+.playwright-mcp/
