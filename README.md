@@ -49,44 +49,6 @@ This project uses [uv](https://github.com/astral-sh/uv) for managing dependencie
 | `uv run <command>` | Executes a command (e.g., `robot`) inside the virtual environment. |
 | `uv lock` | Updates the `uv.lock` file without installing anything. |
 
-## 🤖 Robot Framework MCP (rf-mcp)
-
-**RobotMCP** is an MCP (Model Context Protocol) server that allows AI agents (like Claude or Antigravity) to interact directly with this project, enabling the AI to plan, write, and execute tests autonomously.
-
-### Available Features
-- **Step-by-Step Execution**: The AI can execute one keyword at a time and analyze the result in real-time.
-- **Keyword Discovery**: The agent automatically maps all business keywords (`resources/`) and infrastructure of this project.
-- **Semantic Memory**: The server uses a local database (`.robot_memory.db`) to learn specific selectors and test patterns of this repository.
-
-### How to Use
-The server is already globally configured in the `mcp_config.json` file. When interacting with the AI in this repository:
-1. The agent automatically detects the `ROBOT_PROJECT_ROOT` as this folder.
-2. You can ask: *"List the available business keywords"* or *"Create a test for flow X using existing keywords"*.
-3. The agent will use MCP tools to validate locators and flows without you needing to run commands manually.
-
-### 💡 Golden Tip: Prompt for AI
-To ensure the AI strictly follows the layered architecture and writing patterns of this project, use a prompt based on this model:
-
-```markdown
-# Goal: Automate the flow [FLOW NAME]
-
-## 1. Pattern Analysis (Architecture)
-Before starting, analyze the 'resources/keywords/app/Book_Store' folder.
-- Understand how selectors are organized in '.pages.resource' files.
-- Observe how business logic is encapsulated in '.keywords.resource' files.
-- Check how tests consume 'Environment.keywords.resource'.
-
-## 2. Implementation
-Apply the same architectural pattern:
-- Page Objects in 'resources/keywords/app/[Feature]/[name].pages.resource'.
-- Business Keywords in 'resources/keywords/app/[Feature]/[name].keywords.resource'.
-- Test Suite in 'tests/[name].robot'.
-
-## 3. Technical Requirements
-- Use Browser Library.
-- Run stepwise to validate locators before finalizing.
-```
-
 ## 🛠 Setup and Installation
 
 ### 1. Clone the Repository
@@ -191,6 +153,62 @@ Local rules are defined in `.robocop` and `robot.toml`.
 Generate an interactive HTML documentation for all keywords:
 ```bash
 python3 tools/generate_docs.py
+```
+
+## 🤖 Robot Framework MCP (rf-mcp)
+
+**RobotMCP** is an MCP (Model Context Protocol) server that allows AI agents (like Claude or Antigravity) to interact directly with this project, enabling the AI to plan, write, and execute tests autonomously.
+
+### Available Features
+- **Step-by-Step Execution**: The AI can execute one keyword at a time and analyze the result in real-time.
+- **Keyword Discovery**: The agent automatically maps all business keywords (`resources/`) and infrastructure of this project.
+- **Semantic Memory**: The server uses a local database (`.robot_memory.db`) to learn specific selectors and test patterns of this repository.
+
+### Install
+
+    uv tool install rf-mcp[all]
+
+### Configure
+
+    {
+        "mcpServers": {
+            "robotmcp": {
+                "command": "C:/Users/rafae/Documents/Projetos/robot_framework_code_base_template-main/.venv/Scripts/robotmcp.exe",
+                "args": [],
+                "env": {
+                    "ROBOT_PROJECT_ROOT": ""
+                }
+            }
+        }
+    }
+
+### How to Use
+The server is already globally configured in the `mcp_config.json` file. When interacting with the AI in this repository:
+1. The agent automatically detects the `ROBOT_PROJECT_ROOT` as this folder.
+2. You can ask: *"List the available business keywords"* or *"Create a test for flow X using existing keywords"*.
+3. The agent will use MCP tools to validate locators and flows without you needing to run commands manually.
+
+### 💡 Golden Tip: Prompt for AI
+To ensure the AI strictly follows the layered architecture and writing patterns of this project, use a prompt based on this model:
+
+```markdown
+# Goal: Automate the flow [FLOW NAME]
+
+## 1. Pattern Analysis (Architecture)
+Before starting, analyze the 'resources/keywords/app/Book_Store' folder.
+- Understand how selectors are organized in '.pages.resource' files.
+- Observe how business logic is encapsulated in '.keywords.resource' files.
+- Check how tests consume 'Environment.keywords.resource'.
+
+## 2. Implementation
+Apply the same architectural pattern:
+- Page Objects in 'resources/keywords/app/[Feature]/[name].pages.resource'.
+- Business Keywords in 'resources/keywords/app/[Feature]/[name].keywords.resource'.
+- Test Suite in 'tests/[name].robot'.
+
+## 3. Technical Requirements
+- Use Browser Library.
+- Run stepwise to validate locators before finalizing.
 ```
 
 ## 🤝 Contributing
